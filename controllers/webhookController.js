@@ -14,18 +14,19 @@ export const webHookController = async (req,res) => {
         event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
     } catch (err) {
         console.error('Webhook Error:', err.message);
+        return res.status(400).send(`Webhook Error: ${err.message}`);
     }
 
     if (event.type === 'checkout.session.completed') {
         const session = event.data.object;
-        console.log(session)
         try {
             const fetchOrder = await Order.findOne({ stripe_cs_id: session.id }).exec();
             if (fetchOrder && fetchOrder.status === 'Pending') {
                 if (fetchOrder.status === 'Processing') {
                     console.log(`${fetchOrder.orderNumber}ID: order already proccessed`)
-                }
+                    return res.status(200).json({ received: true });
 
+                }
                 const paymentIntent = await stripe.paymentIntents.retrieve(session.payment_intent);
                 const paymentMethod = await stripe.paymentMethods.retrieve(paymentIntent.payment_method);
 
@@ -43,12 +44,11 @@ export const webHookController = async (req,res) => {
                     },
                     { new: true }
                 ).populate('items.product').exec();
-
                 console.log(`${fetchOrder.orderNumber}ID: order proccessed successfully`)
             }
         } catch (error) {
             console.error('Error processing order:', error);
         }
     }
-
+    res.status(200).json({ received: true });
 }

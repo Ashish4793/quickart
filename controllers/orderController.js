@@ -118,7 +118,7 @@ export const handleSuccessCallback = async (req, res) => {
     }
 
     try {
-        const fetchOrder = await Order.findOne({ orderNumber: rto_no, status: 'Pending', stripe_cs_id: cs_id }).exec();
+        const fetchOrder = await Order.findOne({ orderNumber: rto_no, stripe_cs_id: cs_id }).exec();
 
         if (!fetchOrder) {
             return res.status(404).render("404");
