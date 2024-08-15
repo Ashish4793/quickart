@@ -41,7 +41,7 @@
                     <div
                         class="flex flex-col lg:flex-row lg:items-center justify-between px-6 pb-6 border-b border-gray-200">
                         <div class="data">
-                            <p class="font-semibold text-base leading-7 text-black">Order ID: <span
+                            <p class="text-base leading-7 text-black">Order ID: <span
                                     class="text-indigo-600 font-medium">#<%= fullOrder.orderNumber %></span></p>
                             <% const formattedDate=((date)=> new Date(new Date(date).setDate(new Date(date).getDate() +
                                 2)).toLocaleString('en-US', { day: '2-digit', month: 'long', year: 'numeric'

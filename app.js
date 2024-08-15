@@ -4,6 +4,8 @@ import passport from 'passport';
 import express from "express";
 import bodyParser from "body-parser";
 import session from 'express-session';
+import { rateLimit } from 'express-rate-limit'
+import { checkVerified } from './middlewares/verifiedProfileMiddleware.js';
 import ejs from "ejs";
 import Product from "./models/product.js";
 import MongoStore from 'connect-mongo'
@@ -14,9 +16,30 @@ import cartRoutes from './routes/cartRoutes.js'
 import authRoutes from './routes/authRoutes.js'
 import accountRoutes from './routes/accountRoutes.js'
 import orderRoutes from './routes/orderRoutes.js'
-
-
+import Stripe from 'stripe';
+const stripe = new Stripe(process.env.STRIPE_KEY);
+import sendMail from './utils/postMaster.js';
+import { webHookController } from './controllers/webhookController.js';
 const app = express();
+
+
+const limiterForApp = rateLimit({
+	windowMs: 3 * 60 * 1000, 
+	limit: 100, 
+	standardHeaders: true,
+	legacyHeaders: false, 
+    handler: (req, res, next, options) =>
+		res.status(options.statusCode).render('429')
+});
+
+const limiterForAuth = rateLimit({
+	windowMs: 8 * 60 * 1000, 
+	limit: 30, 
+	standardHeaders: true, 
+	legacyHeaders: false,
+    handler: (req, res, next, options) =>
+		res.status(options.statusCode).render('429')
+});
 
 app.use(session({
     secret: process.env.SESSION_KEY,
@@ -52,11 +75,11 @@ const connectDB = async () => {
 };
 
 
-app.use("/", storeRoutes);
-app.use("/", cartRoutes);
-app.use("/auth", authRoutes);
-app.use("/account", accountRoutes);
-app.use("/", orderRoutes);
+app.use("/", limiterForApp, storeRoutes);
+app.use("/", limiterForApp , cartRoutes);
+app.use("/auth", limiterForAuth , authRoutes);
+app.use("/account", limiterForApp, accountRoutes);
+app.use("/", limiterForApp , orderRoutes);
 
 
 
@@ -74,6 +97,17 @@ app.get('/logout', (req, res) => {
     }
 });
 
+//payments webhook
+app.post('/webhook' , express.raw({ type: 'application/json' }) ,webHookController);
+
+
+app.get('/test' , async (req,res ) => {
+    const event = new Date();
+    const timestamp = event.toLocaleString('en-IN', { timeZone: 'IST' });
+    await sendMail('ashishahirwar4793@gmail.com', 'Forgot Password', 'templates/mailer/forgot-password.ejs', {name : 'test' , timestamp : timestamp});
+
+    res.render('test.ejs')
+})
 
 app.get("/add-product", (req, res) => {
     res.render('add-product');
@@ -106,6 +140,7 @@ app.post("/add-product", (req, res) => {
         }
     });
 });
+
 
 
 app.use((req, res, next) => {

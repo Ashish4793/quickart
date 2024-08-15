@@ -44,7 +44,7 @@ export const webHookController = async (req,res) => {
                     },
                     { new: true }
                 ).populate('items.product').exec();
-                console.log(`${fetchOrder.orderNumber}ID: order proccessed successfully`)
+                console.log(`OrderID : ${fetchOrder.orderNumber} processed successfully`)
             }
         } catch (error) {
             console.error('Error processing order:', error);

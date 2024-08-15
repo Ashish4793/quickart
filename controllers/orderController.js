@@ -37,14 +37,39 @@ export const createOrder = async (req, res) => {
                 const orderNo = generateOrderNumber();
                 const cartAmount = total <= 49 ? (total + 9) : total;
 
+                // Check if the user has a Stripe customer ID
+                let stripeCustomerId = req.user.stripeCustomerId;
+                console.log("first" + stripeCustomerId);
 
+                if (!stripeCustomerId) {
+                    // Create a new Stripe customer if the user doesn't have one
+                    const createCustomer = await stripe.customers.create({
+                        name: req.user.name,
+                        email: req.user.email,
+                    });
+
+                    // Update the user with the new Stripe customer ID
+                    const updatedUser = await User.findByIdAndUpdate(
+                        req.user._id,
+                        { stripeCustomerId: createCustomer.id },
+                        { new: true }
+                    ).exec();
+
+                    // Use the updated user's Stripe customer ID
+                    stripeCustomerId = updatedUser.stripeCustomerId;
+                }
+
+                console.log("second" + stripeCustomerId);
+
+                // Create the Stripe Checkout session
                 const session = await stripe.checkout.sessions.create({
+                    customer: stripeCustomerId,
                     line_items: [
                         {
                             price_data: {
                                 currency: 'usd',
                                 product_data: {
-                                    name: `Payment for Order ID : ${orderNo}`,
+                                    name: `Payment for Order ID - ${orderNo}`,
                                 },
                                 unit_amount: cartAmount * 100,
                             },
@@ -58,7 +83,8 @@ export const createOrder = async (req, res) => {
                 });
 
 
-                const sampleOrderData = {
+
+                const orderData = {
                     user: req.user._id,
                     orderNumber: orderNo,
                     orderValue: cartAmount,
@@ -74,16 +100,16 @@ export const createOrder = async (req, res) => {
                         }
 
                         // Populate the order's products array based on the user's cart
-                        sampleOrderData.products = cart.items.map((cartItem) => ({
+                        orderData.products = cart.items.map((cartItem) => ({
                             product: cartItem.product._id,
                             quantity: cartItem.quantity,
                         }));
 
-                        sampleOrderData.shippingAddressID = cart.addressID;
+                        orderData.shippingAddressID = cart.addressID;
 
 
                         // Create a new order
-                        const newOrder = new Order(sampleOrderData);
+                        const newOrder = new Order(orderData);
 
                         // Save the order to the database
                         return newOrder.save();
@@ -179,7 +205,7 @@ export const getUserOrders = async (req, res) => {
 }
 
 export const getOrderByID = async (req, res) => {
-    if (req.isAuthenticated()){
+    if (req.isAuthenticated()) {
         try {
             const foundOrder = await Order.findOne({ orderNumber: req.query.order_no, user: req.user._id }).populate('items.product');
             if (foundOrder != null) {
@@ -197,7 +223,7 @@ export const getOrderByID = async (req, res) => {
 }
 
 export const getOrderCancellationDetails = async (req, res) => {
-    if (req.isAuthenticated()){
+    if (req.isAuthenticated()) {
         try {
             const foundOrder = await Order.findOne({ orderNumber: req.query.order_no, user: req.user._id }).populate('items.product');
             if (foundOrder != null) {
@@ -214,7 +240,7 @@ export const getOrderCancellationDetails = async (req, res) => {
 }
 
 export const processOrderCancellation = async (req, res) => {
-    if (req.isAuthenticated()){
+    if (req.isAuthenticated()) {
         try {
             const foundOrder = await Order.findOne({ orderNumber: req.body.order_no, user: req.user._id }).populate('items.product');
             if (foundOrder != null) {
@@ -223,11 +249,11 @@ export const processOrderCancellation = async (req, res) => {
                     const refund = await stripe.refunds.create({
                         payment_intent: foundOrder.stripe_pi_id
                     });
-                    
-    
+
+
                     // update order on db
-                    const updateOrder = await Order.findOneAndUpdate({orderNumber : foundOrder.orderNumber} , {status : 'Cancelled' , paymentStatus : 'Refunded' ,stripe_pi_id : refund.id});
-    
+                    const updateOrder = await Order.findOneAndUpdate({ orderNumber: foundOrder.orderNumber }, { status: 'Cancelled', paymentStatus: 'Refunded', stripe_pi_id: refund.id });
+
                     res.render("order-cancelled", { order: foundOrder });
                 } else {
                     res.render('404');
@@ -246,11 +272,11 @@ export const processOrderCancellation = async (req, res) => {
 }
 
 export const refundStatus = async (req, res) => {
-    if (req.isAuthenticated()){
+    if (req.isAuthenticated()) {
         try {
-            const foundOrder = await Order.findOne({orderNumber : req.query.order_no});
+            const foundOrder = await Order.findOne({ orderNumber: req.query.order_no });
             const refundDetails = await stripe.refunds.retrieve(foundOrder.stripe_pi_id);
-            res.render('refund-status' , {order : foundOrder , refund : refundDetails});
+            res.render('refund-status', { order: foundOrder, refund: refundDetails });
         } catch (error) {
             res.render('server-error');
             console.log(error);

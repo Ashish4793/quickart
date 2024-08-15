@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import passportLocalMongoose from 'passport-local-mongoose';
+import findOrCreate from 'mongoose-findorcreate';
 
 
 const userSchema = new mongoose.Schema({
@@ -36,10 +37,13 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: false,
         unique : true,
+        sparse: true,
     },
     stripeSubscriptionId: {
         type: String,
         required: false,
+        unique : true,
+        sparse: true, // Add sparse index to avoid null values for being enforced as unique
     },
     newSubscriber : {
         type: Boolean,
@@ -51,10 +55,11 @@ const userSchema = new mongoose.Schema({
         enum: ['active', 'inactive', 'cancelled'],
         default: 'inactive',
     }
-});
+}, { timestamps: true });
 
 
 userSchema.plugin(passportLocalMongoose);
+userSchema.plugin(findOrCreate);
 
 const User = mongoose.model('User' , userSchema);
 
