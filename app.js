@@ -18,8 +18,8 @@ import accountRoutes from './routes/accountRoutes.js'
 import orderRoutes from './routes/orderRoutes.js'
 import Stripe from 'stripe';
 const stripe = new Stripe(process.env.STRIPE_KEY);
-import sendMail from './utils/postMaster.js';
 import { webHookController } from './controllers/webhookController.js';
+import './utils/cronJobs.js'
 const app = express();
 
 
@@ -90,6 +90,7 @@ app.get('/logout', (req, res) => {
                 res.redirect('/');
             } else {
                 console.log(err);
+                res.render('server-error')
             }
         });
     } else {
@@ -101,13 +102,13 @@ app.get('/logout', (req, res) => {
 app.post('/webhook' , express.raw({ type: 'application/json' }) ,webHookController);
 
 
+  
+  
 app.get('/test' , async (req,res ) => {
-    const event = new Date();
-    const timestamp = event.toLocaleString('en-IN', { timeZone: 'IST' });
-    await sendMail('ashishahirwar4793@gmail.com', 'Forgot Password', 'templates/mailer/forgot-password.ejs', {name : 'test' , timestamp : timestamp});
-
-    res.render('test.ejs')
 })
+
+
+
 
 app.get("/add-product", (req, res) => {
     res.render('add-product');
@@ -154,3 +155,5 @@ connectDB().then(() => {
         console.log(`QuicKart Server Listening on ${process.env.PORT || 3000}`);
     });
 });
+
+

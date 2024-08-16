@@ -42,6 +42,7 @@ export const quickartEliteBilling = async (req,res) => {
                         quantity : 1
                     }
                 ],
+                allow_promotion_codes: false,
                 success_url : `${process.env.DOMAIN}/subscription-payment-handler?session_id={CHECKOUT_SESSION_ID}`,
                 cancel_url : `${process.env.DOMAIN}/quickart-elite/billing?paymentFailure=1`,
             });

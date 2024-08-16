@@ -39,7 +39,6 @@ export const createOrder = async (req, res) => {
 
                 // Check if the user has a Stripe customer ID
                 let stripeCustomerId = req.user.stripeCustomerId;
-                console.log("first" + stripeCustomerId);
 
                 if (!stripeCustomerId) {
                     // Create a new Stripe customer if the user doesn't have one
@@ -59,11 +58,11 @@ export const createOrder = async (req, res) => {
                     stripeCustomerId = updatedUser.stripeCustomerId;
                 }
 
-                console.log("second" + stripeCustomerId);
 
                 // Create the Stripe Checkout session
                 const session = await stripe.checkout.sessions.create({
                     customer: stripeCustomerId,
+                    client_reference_id: orderNo,
                     line_items: [
                         {
                             price_data: {

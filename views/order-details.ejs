@@ -3,7 +3,14 @@
 
   <%- include('partials/navbar2'); -%>
 
+  <% const deliveryDate=((date)=> new Date(new Date(date).setDate(new Date(date).getDate() +
+  3)).toLocaleString('en-US', { day: '2-digit', month: 'long', year: 'numeric'
+  }).replace(/(\d+)(?=\s)/, '$1' + (['th','st','nd','rd'][((n)=>n%100>10&&n%100
+  <20?0:[,1,2,3,0,0,0,0,0,0][n%10])(parseInt(RegExp.$1))])) )(fullOrder.orderDate); %>
 
+<% const orderDate=((date)=> new Date(new Date(date).setDate(new Date(date).getDate())).toLocaleString('en-US', { day: '2-digit', month: 'long', year: 'numeric'
+}).replace(/(\d+)(?=\s)/, '$1' + (['th','st','nd','rd'][((n)=>n%100>10&&n%100
+<20?0:[,1,2,3,0,0,0,0,0,0][n%10])(parseInt(RegExp.$1))])) )(fullOrder.orderDate); %>
 
     <section class="py-12 mb-24 relative">
       <div class="w-full max-w-7xl px-4 md:px-5 lg-6 mx-auto">
@@ -45,14 +52,14 @@
                     <div
                       class="relative last:after:hidden after:absolute after:top-7 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-gray-200 null:after:bg-neutral-700">
                       <div class="relative z-10 size-7 flex justify-center items-center">
-                        <div class="size-2 rounded-full bg-gray-400 null:bg-neutral-600"></div>
+                        <div class="size-2 rounded-full <%= ['Processing', 'Shipped', 'Delivered'].includes(fullOrder.status) ? 'bg-green-600' : 'bg-gray-400' %>"></div>
                       </div>
                     </div>
                     <!-- End Icon -->
 
                     <!-- Right Content -->
                     <div class="grow pt-0.5 pb-8">
-                      <h3 class="flex text-xl gap-x-1.5 font-semibold text-gray-800 null:text-white">
+                      <h3 class="flex text-xl gap-x-1.5 font-semibold <%= ['Processing', 'Shipped', 'Delivered'].includes(fullOrder.status) ? 'text-green-600' : 'text-gray-400' %>">
                         <svg class="shrink-0 size-5 mt-1" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                           viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                           stroke-linejoin="round">
@@ -62,10 +69,9 @@
                           <line x1="16" x2="8" y1="17" y2="17"></line>
                           <line x1="10" x2="8" y1="9" y2="9"></line>
                         </svg>
-                        Order Placed
-                      </h3>
-                      <p class="mt-1 text-sm text-gray-600 null:text-neutral-400">
-                        23 Jul 2024
+                        <%= ['Processing', 'Shipped', 'Delivered'].includes(fullOrder.status) ? 'Order Confirmed' : 'Pending' %>                      </h3>
+                      <p class="mt-1 text-xs text-gray-600 null:text-neutral-400">
+                        <%= ['Processing','Shipped','Delivered'].includes(fullOrder.status) ? `${orderDate}` : `` %>              
                       </p>
 
                     </div>
@@ -79,24 +85,23 @@
                     <div
                       class="relative last:after:hidden after:absolute after:top-7 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-gray-200 null:after:bg-neutral-700">
                       <div class="relative z-10 size-7 flex justify-center items-center">
-                        <div class="size-2 rounded-full bg-gray-400 null:bg-neutral-600"></div>
+                        <div class="size-2 rounded-full <%= ['Processing', 'Shipped', 'Delivered'].includes(fullOrder.status) ? 'bg-green-600' : 'bg-gray-400' %>"></div>
                       </div>
                     </div>
                     <!-- End Icon -->
 
                     <!-- Right Content -->
                     <div class="grow pt-0.5 pb-8">
-                      <h3 class="flex text-xl gap-x-1.5 font-semibold text-gray-800 null:text-white">
+                      <h3 class="flex text-xl gap-x-1.5 font-semibold <%= ['Processing', 'Shipped', 'Delivered'].includes(fullOrder.status) ? 'text-green-600' : 'text-gray-400' %>">
                         <svg class="shrink-0 size-5 mt-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                           width="24" height="24" fill="none" viewBox="0 0 24 24">
                           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                         </svg>
-
-                        Processing
+                        <%= ['Processing', 'Shipped', 'Delivered'].includes(fullOrder.status) ? 'Processing' : 'Processing' %>           
                       </h3>
-                      <p class="mt-1 text-sm text-gray-600 null:text-neutral-400">
-                        23 Jul 2024
+                      <p class="mt-1 text-xs text-gray-600 null:text-neutral-400">
+                        <%= ['Processing','Shipped','Delivered'].includes(fullOrder.status) ? `${orderDate}` : `` %>              
                       </p>
 
                     </div>
@@ -110,24 +115,23 @@
                     <div
                       class="relative last:after:hidden after:absolute after:top-7 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-gray-200 null:after:bg-neutral-700">
                       <div class="relative z-10 size-7 flex justify-center items-center">
-                        <div class="size-2 rounded-full bg-gray-400 null:bg-neutral-600"></div>
+                        <div class="size-2 rounded-full <%= ['Shipped', 'Delivered'].includes(fullOrder.status) ? 'bg-green-600' : 'bg-gray-400' %>"></div>
                       </div>
                     </div>
                     <!-- End Icon -->
 
                     <!-- Right Content -->
                     <div class="grow pt-0.5 pb-8">
-                      <h3 class="flex text-xl gap-x-1.5 font-semibold text-gray-800 null:text-white">
+                      <h3 class="flex text-xl gap-x-1.5 font-semibold <%= ['Shipped', 'Delivered'].includes(fullOrder.status) ? 'text-green-600' : 'text-gray-400' %>">
                         <svg class="shrink-0 size-5 mt-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                           width="24" height="24" fill="none" viewBox="0 0 24 24">
                           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9h2m8 0H9m4 0h2m4 0h2v-4m0 0h-5m3.5 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-10 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
                         </svg>
-
-                        Shipped
+                        <%= ['Shipped', 'Delivered'].includes(fullOrder.status) ? 'Shipped' : 'Yet to be shipped' %>                     
                       </h3>
-                      <p class="mt-1 text-sm text-gray-600 null:text-neutral-400">
-                        23 Jul 2024
+                      <p class="mt-1 text-xs text-gray-600 null:text-neutral-400">
+                        <%= ['Shipped','Delivered'].includes(fullOrder.status) ? `${orderDate}` : `Expected by ${orderDate}` %>                    
                       </p>
                     </div>
                     <!-- End Right Content -->
@@ -142,24 +146,23 @@
                     <div
                       class="relative last:after:hidden  after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-gray-200 null:after:bg-neutral-700">
                       <div class="relative size-7 flex justify-center items-center">
-                        <div class="size-2 rounded-full bg-gray-400 null:bg-neutral-600"></div>
+                        <div class="size-2 rounded-full <%= ['Delivered'].includes(fullOrder.status) ? 'bg-green-600' : 'bg-gray-400' %>"></div>
                       </div>
                     </div>
                     <!-- End Icon -->
 
                     <!-- Right Content -->
                     <div class="grow pt-0.5 pb-8">
-                      <h3 class="flex text-xl gap-x-1.5 font-semibold text-gray-800 null:text-white">
+                      <h3 class="flex text-xl gap-x-1.5 font-semibold <%= ['Delivered'].includes(fullOrder.status) ? 'text-green-600' : 'text-gray-400' %>">
                         <svg class="shrink-0 size-5 mt-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                           width="24" height="24" fill="none" viewBox="0 0 24 24">
                           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                         </svg>
-
-                        Delivered
+                        <%= ['Delivered'].includes(fullOrder.status) ? 'Delivered' : 'Yet to be delivered' %>                
                       </h3>
-                      <p class="mt-1 text-sm text-gray-600 null:text-neutral-400">
-                        25 Jul 2024
+                      <p class="mt-1 text-xs text-gray-600 null:text-neutral-400">
+                        <%= ['Delivered'].includes(fullOrder.status) ? `${deliveryDate}` : `Expected by ${deliveryDate}` %>              
                       </p>
                     </div>
                     <!-- End Right Content -->
@@ -220,13 +223,10 @@
                   <div class="data">
                     <p class="leading-7 text-black">Order ID: <span class="text-indigo-600 font-medium">#<%=
                           fullOrder.orderNumber %></span></p>
-                    <% const formattedDate=((date)=> new Date(new Date(date).setDate(new Date(date).getDate() +
-                      2)).toLocaleString('en-US', { day: '2-digit', month: 'long', year: 'numeric'
-                      }).replace(/(\d+)(?=\s)/, '$1' + (['th','st','nd','rd'][((n)=>n%100>10&&n%100
-                      <20?0:[,1,2,3,0,0,0,0,0,0][n%10])(parseInt(RegExp.$1))])) )(fullOrder.orderDate); %>
+
                         <p class="text-base leading-7 text-black">Estimated Delivery date : <span
                             class="text-black font-medium">
-                            <%= formattedDate %>
+                            <%= deliveryDate %>
                           </span></p>
                         <p class=" text-base leading-7 text-black">Shipping Address : <span
                             class="text-black font-medium">
