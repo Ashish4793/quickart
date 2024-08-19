@@ -13,7 +13,8 @@
                         class="w-full flex-col justify-center sm:items-start items-center gap-5 inline-flex sm:pr-5 sm:pb-0 pb-5 sm:border-r sm:border-b-0 border-b border-gray-200">
                         <h6 class="text-gray-900 text-base font-semibold leading-relaxed">Order Date:
                             <span class="text-gray-500 font-medium">
-                                <%= new Date(order.orderDate).toLocaleDateString('en-US', {
+                                <%= new Date(order.orderDate).toLocaleDateString('en-GB', {
+                                    timeZone: "Asia/Kolkata",
                                     year: 'numeric',
                                     month: 'long',
                                     day: 'numeric'
@@ -31,7 +32,8 @@
                     <div class="w-full flex-col justify-center sm:items-start items-center gap-5 inline-flex">
                         <h6 class="text-gray-900 text-base font-semibold leading-relaxed">Refund Date:
                             <span class="text-gray-500 text-base font-medium leading-relaxed">
-                                <%= new Date(refund.created * 1000).toLocaleDateString('en-US', {
+                                <%= new Date(refund.created * 1000).toLocaleDateString('en-GB', {
+                                    timeZone: "Asia/Kolkata",
                                     year: 'numeric',
                                     month: 'long',
                                     day: 'numeric'
@@ -70,8 +72,8 @@
                             Refund ID: <%= refund.id %>
                         </h6>
                         <h6 class="text-indigo-600 text-sm font-normal leading-relaxed break-words overflow-hidden">
-                            <%= new Date(refund.created * 1000).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %>,
-                            <%= new Date(refund.created * 1000).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }) %>
+                            <%= new Date(refund.created * 1000).toLocaleDateString('en-US', { timeZone: "Asia/Kolkata", year: 'numeric', month: 'long', day: 'numeric' }) %>,
+                            <%= new Date(refund.created * 1000).toLocaleTimeString('en-US', { timeZone: "Asia/Kolkata", hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }) %>
                         </h6>
                     </ul>                    
                 </li>
@@ -101,12 +103,14 @@
                             Amount : $<%= refund.amount /100 %>
                         </h6>
                         <h6 class="text-indigo-600 text-sm font-normal leading-relaxed">
-                            <%= new Date(refund.created * 1000).toLocaleDateString('en-US', {
+                            <%= new Date(refund.created * 1000).toLocaleDateString('en-GB', {
+                                timeZone: "Asia/Kolkata",
                                 year: 'numeric',
                                 month: 'long',
                                 day: 'numeric'
                               }) %>,
-                              <%= new Date(refund.created * 1000).toLocaleTimeString('en-US', {
+                              <%= new Date(refund.created * 1000).toLocaleTimeString('en-GB', {
+                                timeZone: "Asia/Kolkata",
                                 hour: '2-digit',
                                 minute: '2-digit',
                                 second: '2-digit',

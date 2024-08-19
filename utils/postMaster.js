@@ -5,15 +5,26 @@ import ejs from 'ejs';
 
 const readFile = promisify(fs.readFile);
 
+// const transporter = nodemailer.createTransport({
+//     service: 'gmail',
+//     auth: {
+//         user: process.env.MAIL_ID,
+//         pass: process.env.MAIL_PASS
+//     },
+//     tls: {
+//         rejectedUnauthorized: false
+//     }
+// });
+
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.MAIL_ID,
-        pass: process.env.MAIL_PASS
-    },
-    tls: {
-        rejectedUnauthorized: false
-    }
+  host: 'smtppro.zoho.in',
+  port: 465,
+  secure: true, // Use SSL
+  auth: {
+    type: 'login',
+    user: process.env.MAIL_ID,
+    pass: process.env.MAIL_PASS
+  }
 });
 
 
@@ -23,7 +34,7 @@ const sendMail = async (to, subject, templatePath, templateData) => {
     const html = ejs.render(template, templateData);
 
     const info = await transporter.sendMail({
-      from: `"QuicKart" <${process.env.SMTP_USER}>`,
+      from: '"QuicKart" <mailer@ashissh.tech>',
       to,
       subject,
       html,

@@ -44,7 +44,7 @@
                             <p class="text-base leading-7 text-black">Order ID: <span
                                     class="text-indigo-600 font-medium">#<%= fullOrder.orderNumber %></span></p>
                             <% const formattedDate=((date)=> new Date(new Date(date).setDate(new Date(date).getDate() +
-                                3)).toLocaleString('en-US', { day: '2-digit', month: 'long', year: 'numeric'
+                                3)).toLocaleString('en-US', {timeZone: "Asia/Kolkata", day: '2-digit', month: 'long', year: 'numeric'
                                 }).replace(/(\d+)(?=\s)/, '$1' + (['th','st','nd','rd'][((n)=>n%100>10&&n%100
                                 <20?0:[,1,2,3,0,0,0,0,0,0][n%10])(parseInt(RegExp.$1))])) )(fullOrder.orderDate); %>
                                     <p class="text-base leading-7 text-black">Estimated Delivery date : <span
@@ -69,7 +69,7 @@
                     </div>
                     <div class="w-full px-3 min-[400px]:px-6">
 
-                        <% fullOrder.products.forEach(orderProduct=> { %>
+                        <% fullOrder.products.forEach(orderProduct => { %>
 
                             <div class="bg-white border-b border-gray-200 px-3 py-4 mb-6 mt-2">
                                 <div class="flex items-center space-x-4">

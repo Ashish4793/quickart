@@ -27,7 +27,7 @@
                 <div class="w-full flex-col justify-start items-end lg:gap-16 gap-12 inline-flex">
                     <div class="w-full flex-col justify-start items-center gap-14 flex">
                         <div class="w-full flex-col justify-start items-start gap-3 flex">
-                            <h2 class="w-full text-center text-gray-900 text-3xl font-bold font-manrope leading-normal">
+                            <h2 class="w-full text-center text-red-600 text-3xl font-bold font-manrope leading-normal">
                                 Order Cancelled!</h2>
                             <p class="w-full text-center text-gray-500 text-base font-medium leading-relaxed">We have
                                 received your cancellation request and have initiated your refund.</p>
@@ -43,7 +43,7 @@
                                         </h5>
 
                                         <% const formattedDate=((date)=> new Date(new Date(date).setDate(new Date(date).getDate() +
-                                        0)).toLocaleString('en-US', { day: '2-digit', month: 'long', year: 'numeric'
+                                        0)).toLocaleString('en-US', { timeZone: "Asia/Kolkata", day: '2-digit', month: 'long', year: 'numeric'
                                         }).replace(/(\d+)(?=\s)/, '$1' + (['th','st','nd','rd'][((n)=>n%100>10&&n%100
                                         <20?0:[,1,2,3,0,0,0,0,0,0][n%10])(parseInt(RegExp.$1))])) )(order.orderDate); %>
                                         <h5 class="text-gray-900 text-lg font-semibold leading-normal">Order Date:

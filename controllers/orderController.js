@@ -5,7 +5,7 @@ import { generateOrderNumber } from "../utils/generateOrderNo.js"
 import Order from "../models/order.js";
 import Stripe from 'stripe';
 const stripe = new Stripe(process.env.STRIPE_KEY);
-
+import sendMail from "../utils/postMaster.js";
 
 export const showPaymentMethodPage = async (req, res) => {
     if (req.isAuthenticated()) {
@@ -178,6 +178,11 @@ export const handleSuccessCallback = async (req, res) => {
                 },
                 { new: true }
             ).populate('items.product').exec();
+            
+            // send email
+            const event = new Date();
+            const timestamp = event.toLocaleString('en-GB', { timeZone: 'Asia/Kolkata' });
+            await sendMail(updateOrder.user.email, 'Order Confirmation', 'templates/mailer/order-confirmation-template.ejs', { orderData: updateOrder, timestamp: timestamp, address: address, domain: process.env.DOMAIN });
 
             return res.render('order-success', { fullOrder: updateOrder, address: address });
         } else {

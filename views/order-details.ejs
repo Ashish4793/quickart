@@ -8,9 +8,13 @@
   }).replace(/(\d+)(?=\s)/, '$1' + (['th','st','nd','rd'][((n)=>n%100>10&&n%100
   <20?0:[,1,2,3,0,0,0,0,0,0][n%10])(parseInt(RegExp.$1))])) )(fullOrder.orderDate); %>
 
-<% const orderDate=((date)=> new Date(new Date(date).setDate(new Date(date).getDate())).toLocaleString('en-US', { day: '2-digit', month: 'long', year: 'numeric'
+<% const orderDate=((date)=> new Date(new Date(date).setDate(new Date(date).getDate())).toLocaleString('en-US', { timeZone: "Asia/Kolkata", day: '2-digit', month: 'long', year: 'numeric'
 }).replace(/(\d+)(?=\s)/, '$1' + (['th','st','nd','rd'][((n)=>n%100>10&&n%100
 <20?0:[,1,2,3,0,0,0,0,0,0][n%10])(parseInt(RegExp.$1))])) )(fullOrder.orderDate); %>
+
+<% const orderTimeIST = new Date(fullOrder.orderDate).toLocaleString("en-GB", { timeZone: "Asia/Kolkata", hour12: false }).split(' ')[1]; %>
+
+<% const updateTimeIST = new Date(fullOrder.updatedAt).toLocaleString("en-GB", { timeZone: "Asia/Kolkata", hour12: false }).split(' ')[1]; %>
 
     <section class="py-12 mb-24 relative">
       <div class="w-full max-w-7xl px-4 md:px-5 lg-6 mx-auto">
@@ -71,7 +75,7 @@
                         </svg>
                         <%= ['Processing', 'Shipped', 'Delivered'].includes(fullOrder.status) ? 'Order Confirmed' : 'Pending' %>                      </h3>
                       <p class="mt-1 text-xs text-gray-600 null:text-neutral-400">
-                        <%= ['Processing','Shipped','Delivered'].includes(fullOrder.status) ? `${orderDate}` : `` %>              
+                        <%= ['Processing','Shipped','Delivered'].includes(fullOrder.status) ? `${orderDate}, ${orderTimeIST}` : `` %>              
                       </p>
 
                     </div>
@@ -101,7 +105,7 @@
                         <%= ['Processing', 'Shipped', 'Delivered'].includes(fullOrder.status) ? 'Processing' : 'Processing' %>           
                       </h3>
                       <p class="mt-1 text-xs text-gray-600 null:text-neutral-400">
-                        <%= ['Processing','Shipped','Delivered'].includes(fullOrder.status) ? `${orderDate}` : `` %>              
+                        <%= ['Processing','Shipped','Delivered'].includes(fullOrder.status) ? `${orderDate}, ${orderTimeIST}` : `` %>              
                       </p>
 
                     </div>
@@ -131,7 +135,7 @@
                         <%= ['Shipped', 'Delivered'].includes(fullOrder.status) ? 'Shipped' : 'Yet to be shipped' %>                     
                       </h3>
                       <p class="mt-1 text-xs text-gray-600 null:text-neutral-400">
-                        <%= ['Shipped','Delivered'].includes(fullOrder.status) ? `${orderDate}` : `Expected by ${orderDate}` %>                    
+                        <%= ['Shipped','Delivered'].includes(fullOrder.status) ? `${orderDate}, ${updateTimeIST}` : `Expected by ${orderDate}` %>                    
                       </p>
                     </div>
                     <!-- End Right Content -->

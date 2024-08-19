@@ -36,7 +36,7 @@
                     
                         <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1" style="box-sizing: border-box;">
                           <dt class="text-base font-medium text-gray-500 null:text-gray-400">Date</dt>
-                          <dd class="mt-1.5 text-base font-semibold text-gray-900 null:text-white"><%= order.orderDate.toLocaleString('en-US', { day: '2-digit', month: 'long', year: 'numeric'}) %></dd>
+                          <dd class="mt-1.5 text-base font-semibold text-gray-900 null:text-white"><%= order.orderDate.toLocaleString('en-US', { timeZone: "Asia/Kolkata", day: '2-digit', month: 'long', year: 'numeric'}) %></dd>
                         </dl>
                     
                         <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1" style="box-sizing: border-box;">
