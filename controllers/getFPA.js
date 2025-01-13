@@ -26,7 +26,7 @@ export const getFPA = async (req,res) => {
         }
     } else {
         try {
-            const foundFPA = await Product.find({ isFPA: true }).sort({ createdAt: -1 });                const foundCart = await Cart.findOne({ user: req.user._id });   
+            const foundFPA = await Product.find({ isFPA: true }).sort({ createdAt: -1 });                
             res.render("home" , {fpa : foundFPA , cartValue : 0 , NoOfitems : 0 , user : null});
         } catch (error) {
             console.error(error);
