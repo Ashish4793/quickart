@@ -20,13 +20,13 @@ export const quickartElitePage = async (req , res) => {
 export const quickartEliteBilling = async (req,res) => {
     if(req.isAuthenticated()) {
         try {
-            if (req.user.newSubscriber && req.user.verified && req.user.stripeCustomerId == undefined) {
+            if (req.user.stripeCustomerId == undefined) {
                 const createCustomer = await stripe.customers.create({
                     name: req.user.name,
                     email: req.user.email,
                 });
 
-                const updateCustomer = await User.findOneAndUpdate({_id : req.user._id} , {stripeCustomerId : createCustomer.id} ,  { new: true }).exec();
+                await User.findOneAndUpdate({_id : req.user._id} , {stripeCustomerId : createCustomer.id} ,  { new: true }).exec();
             } 
             
             //Fetch user
@@ -58,15 +58,11 @@ export const quickartEliteBilling = async (req,res) => {
 
 export const subscriptionPaymentHandler = async (req,res) => {
     if (req.isAuthenticated()){
-        console.log(req.query);
         const sessionID = req.query.session_id;
         const session = await stripe.checkout.sessions.retrieve(sessionID);
-
-        console.log(session);
         const subscriptionID = session.subscription;
         const subscription = await stripe.subscriptions.retrieve(subscriptionID);
         res.json(subscription);
-
     } else {
         res.redirect('/auth/login');
     }

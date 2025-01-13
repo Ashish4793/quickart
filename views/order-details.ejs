@@ -1,7 +1,6 @@
 <%- include('partials/header'); -%>
 
-
-  <%- include('partials/navbar2'); -%>
+<%- include('partials/navbar2'); -%>
 
   <% const deliveryDate=((date)=> new Date(new Date(date).setDate(new Date(date).getDate() +
   3)).toLocaleString('en-US', { day: '2-digit', month: 'long', year: 'numeric'
@@ -11,6 +10,11 @@
 <% const orderDate=((date)=> new Date(new Date(date).setDate(new Date(date).getDate())).toLocaleString('en-US', { timeZone: "Asia/Kolkata", day: '2-digit', month: 'long', year: 'numeric'
 }).replace(/(\d+)(?=\s)/, '$1' + (['th','st','nd','rd'][((n)=>n%100>10&&n%100
 <20?0:[,1,2,3,0,0,0,0,0,0][n%10])(parseInt(RegExp.$1))])) )(fullOrder.orderDate); %>
+
+<% const updateDate=((date)=> new Date(new Date(date).setDate(new Date(date).getDate())).toLocaleString('en-US', { timeZone: "Asia/Kolkata", day: '2-digit', month: 'long', year: 'numeric'
+}).replace(/(\d+)(?=\s)/, '$1' + (['th','st','nd','rd'][((n)=>n%100>10&&n%100
+<20?0:[,1,2,3,0,0,0,0,0,0][n%10])(parseInt(RegExp.$1))])) )(fullOrder.updatedAt); %>
+
 
 <% const orderTimeIST = new Date(fullOrder.orderDate).toLocaleString("en-GB", { timeZone: "Asia/Kolkata", hour12: false }).split(' ')[1]; %>
 
@@ -135,7 +139,7 @@
                         <%= ['Shipped', 'Delivered'].includes(fullOrder.status) ? 'Shipped' : 'Yet to be shipped' %>                     
                       </h3>
                       <p class="mt-1 text-xs text-gray-600 null:text-neutral-400">
-                        <%= ['Shipped','Delivered'].includes(fullOrder.status) ? `${orderDate}, ${updateTimeIST}` : `Expected by ${orderDate}` %>                    
+                        <%= ['Shipped','Delivered'].includes(fullOrder.status) ? `${updateDate}, ${updateTimeIST}` : `Expected by ${orderDate}` %>                    
                       </p>
                     </div>
                     <!-- End Right Content -->
@@ -189,7 +193,7 @@
         <div class="space-y-5">
 
           <!-- Cancelled order alert -->
-          <% if(fullOrder.status==='Cancelled' ) { %>
+          <% if(fullOrder.status==='Cancelled'  ) { %>
             <div class="bg-red-50 border-t-2 border-red-500 rounded-lg p-4" role="alert" tabindex="-1"
               aria-labelledby="hs-bordered-success-style-label">
               <div class="flex">
@@ -212,10 +216,12 @@
                   <p class="text-xs md:text-sm text-gray-700">
                     We have cancelled your order as per your request and have issued you a refund.
                   </p>
-                  <p class="text-xs mt-1 md:text-sm text-gray-700 ">
-                    <a class="underline text-blue-500"
-                      href="/track-refund-status?order_no=<%= fullOrder.orderNumber %>">Track Refund Status</a>
-                  </p>
+                  <% if(fullOrder.paymentMethod != 'COD') { %>
+                    <p class="text-xs mt-1 md:text-sm text-gray-700 ">
+                      <a class="underline text-blue-500"
+                        href="/track-refund-status?order_no=<%= fullOrder.orderNumber %>">Track Refund Status</a>
+                    </p>
+                  <% } %>
                 </div>
               </div>
             </div>

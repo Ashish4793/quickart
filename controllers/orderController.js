@@ -131,6 +131,66 @@ export const createOrder = async (req, res) => {
     }
 }
 
+export const processCodOrder = async (req, res) => {
+    if (req.isAuthenticated()) {
+        try {
+            const cart = await Cart.findOne({ user: req.user._id });
+            const total = await calculateCartTotal(cart);
+            const orderNo = generateOrderNumber();
+            const cartAmount = total <= 49 ? (total + 9) : total;
+
+            const orderData = {
+                user: req.user._id,
+                orderNumber: orderNo,
+                orderValue: cartAmount,
+                status: 'Processing',
+                stripe_pi_id: 'NA',
+                paymentMethod: 'COD'
+            };
+
+            const populatedCart = await Cart.findOne({ user: req.user._id }).populate('items.product');
+            if (!populatedCart) {
+                res.status(500).render('server-error');
+                throw new Error('Cart not found for the user');
+            }
+
+            // Populate the order's products array based on the user's cart
+            orderData.products = populatedCart.items.map((cartItem) => ({
+                product: cartItem.product._id,
+                quantity: cartItem.quantity,
+            }));
+
+            orderData.shippingAddressID = populatedCart.addressID;
+
+            // Create a new order
+            const newOrder = new Order(orderData);
+
+            // Save the order to the database
+            const savedOrder = await newOrder.save();
+
+            //Re-fetch order details with product de
+            const fetchOrder = await Order.findOne({ _id: savedOrder._id }).exec();
+            const address = req.user.address.find(addr => addr._id.toString() === fetchOrder.shippingAddressID);
+
+            //Show success page
+            res.render('order-success', { fullOrder: fetchOrder, address: address });
+
+            //send confirmation email
+            const event = new Date();
+            const timestamp = event.toLocaleString('en-GB', { timeZone: 'Asia/Kolkata' });
+            await sendMail(fetchOrder.user.email, 'Order Confirmation', 'templates/mailer/order-confirmation-template.ejs', { orderData: fetchOrder, timestamp: timestamp, address: address, domain: process.env.DOMAIN });
+
+            // Empty the cart
+            await Cart.updateOne({ user: fetchOrder.user }, { $set: { items: [] } }).exec();
+        } catch (error) {
+            res.status(500).render('server-error');
+            console.error('Error creating order:', error.message);
+        }
+    } else {
+        res.redirect('/auth/login');
+    }
+};
+
 export const handleSuccessCallback = async (req, res) => {
     if (!req.isAuthenticated()) {
         return res.redirect('/auth/login');
@@ -152,7 +212,7 @@ export const handleSuccessCallback = async (req, res) => {
         const address = req.user.address.find(addr => addr._id.toString() === fetchOrder.shippingAddressID);
 
         if (fetchOrder.status === 'Processing') {
-            return res.render('order-success', { fullOrder: fetchOrder, address: req.user.address.find(addr => addr._id.toString() === fetchOrder.shippingAddressID) });
+            return res.render('order-success', { fullOrder: fetchOrder, address: address });
         }
 
         const session = await stripe.checkout.sessions.retrieve(cs_id);
@@ -178,7 +238,7 @@ export const handleSuccessCallback = async (req, res) => {
                 },
                 { new: true }
             ).populate('items.product').exec();
-            
+
             // send email
             const event = new Date();
             const timestamp = event.toLocaleString('en-GB', { timeZone: 'Asia/Kolkata' });
@@ -249,16 +309,33 @@ export const processOrderCancellation = async (req, res) => {
             const foundOrder = await Order.findOne({ orderNumber: req.body.order_no, user: req.user._id }).populate('items.product');
             if (foundOrder != null) {
                 if (foundOrder.status === 'Shipped' || foundOrder.status === 'Processing') {
-                    // Creating refund from stripe api
-                    const refund = await stripe.refunds.create({
-                        payment_intent: foundOrder.stripe_pi_id
-                    });
+                    // Create refund from stripe
+
+                    if (foundOrder.paymentMethod != 'COD') {
+                        const refund = await stripe.refunds.create({
+                            payment_intent: foundOrder.stripe_pi_id
+                        });
+
+                        // update order on db
+                        const updateOrder = await Order.findOneAndUpdate({ orderNumber: foundOrder.orderNumber }, { status: 'Cancelled', paymentStatus: 'Refunded', stripe_pi_id: refund.id }, { new: true }).exec();
+                        res.render("order-cancelled", { order: foundOrder });
+                        
+                        //send email
+                        const event = new Date();
+                        const timestamp = event.toLocaleString('en-GB', { timeZone: 'Asia/Kolkata' });
+                        await sendMail(updateOrder.user.email, 'Order Cancellation', 'templates/mailer/order-cancellation-template.ejs', { orderData: updateOrder, timestamp: timestamp, domain: process.env.DOMAIN });
+                    } else {
+                        const updateOrder = await Order.findOneAndUpdate({ orderNumber: foundOrder.orderNumber }, { status: 'Cancelled', paymentStatus: 'Refunded', stripe_pi_id: 'NA' }, { new: true }).exec();
+                        res.render("order-cancelled", { order: foundOrder });
+                        
+                        //send email
+                        const event = new Date();
+                        const timestamp = event.toLocaleString('en-GB', { timeZone: 'Asia/Kolkata' });
+                        await sendMail(updateOrder.user.email, 'Order Cancellation', 'templates/mailer/order-cancellation-template.ejs', { orderData: updateOrder, timestamp: timestamp, domain: process.env.DOMAIN });
+
+                    }
 
 
-                    // update order on db
-                    const updateOrder = await Order.findOneAndUpdate({ orderNumber: foundOrder.orderNumber }, { status: 'Cancelled', paymentStatus: 'Refunded', stripe_pi_id: refund.id });
-
-                    res.render("order-cancelled", { order: foundOrder });
                 } else {
                     res.render('404');
                 }
@@ -279,6 +356,9 @@ export const refundStatus = async (req, res) => {
     if (req.isAuthenticated()) {
         try {
             const foundOrder = await Order.findOne({ orderNumber: req.query.order_no });
+            if (foundOrder.paymentMethod == 'COD') {
+                return res.render('404');
+            }
             const refundDetails = await stripe.refunds.retrieve(foundOrder.stripe_pi_id);
             res.render('refund-status', { order: foundOrder, refund: refundDetails });
         } catch (error) {

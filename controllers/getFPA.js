@@ -7,23 +7,18 @@ import { calculateCartTotal } from "../utils/cartTotal.js";
 export const getFPA = async (req,res) => {
     if(req.isAuthenticated()){
         try {
-            
             let userCart = await Cart.findOne({ user: req.user._id });
+            const foundFPA = await Product.find({ isFPA: true }).sort({ createdAt: -1 });                const foundCart = await Cart.findOne({ user: req.user._id });   
 
             if (!userCart) {
                 const newCart = new Cart({ user: req.user._id, items: [] });
                 newCart.save();
-                const foundFPA = await Product.find({ isFPA: true });
-                const foundCart = await Cart.findOne({ user: req.user._id });   
                 const total = await calculateCartTotal(foundCart);
                 res.render("home" , {fpa : foundFPA , cartValue : total , NoOfitems : foundCart.items.length , user : req.user});
             } else {
-                const foundFPA = await Product.find({ isFPA: true });
                 const foundCart = await Cart.findOne({ user: req.user._id });   
-    
                 const total = await calculateCartTotal(foundCart);
                 res.render("home" , {fpa : foundFPA , cartValue : total , NoOfitems : foundCart.items.length , user : req.user});
-
             }
         } catch (error) {
             console.error(error);
@@ -31,7 +26,7 @@ export const getFPA = async (req,res) => {
         }
     } else {
         try {
-            const foundFPA = await Product.find({ isFPA: true });
+            const foundFPA = await Product.find({ isFPA: true }).sort({ createdAt: -1 });                const foundCart = await Cart.findOne({ user: req.user._id });   
             res.render("home" , {fpa : foundFPA , cartValue : 0 , NoOfitems : 0 , user : null});
         } catch (error) {
             console.error(error);

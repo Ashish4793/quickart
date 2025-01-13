@@ -105,6 +105,11 @@ app.post('/webhook' , express.raw({ type: 'application/json' }) ,webHookControll
   
   
 app.get('/test' , async (req,res ) => {
+    if(req.isAuthenticated()){
+        res.redirect('/')
+    } else {
+        res.redirect('/auth/login');
+    }
 })
 
 

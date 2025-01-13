@@ -47,12 +47,16 @@
                             </div>
                             <div class="w-full justify-between items-center gap-4 flex sm:flex-row flex-col pb-8 border-b border-gray-200">
                                 <h5 class="text-gray-900 text-lg font-semibold leading-normal">Refund Amount:
-                                    <span class="text-gray-500 font-medium">$<%= order.orderValue %></span>
+                                    <% if(order.paymentMethod === 'COD'){ %>
+                                        <span class="text-gray-500 font-medium">$0</span>
+                                    <% } else { %>
+                                        <span class="text-gray-500 font-medium">$<%= order.orderValue %></span>
+                                    <% } %>
                                 </h5>
                                 <h5 class="text-gray-900 text-lg font-semibold leading-normal">Payment Method:
                                     <% if(order.paymentMethod === 'amazon_pay'){ %>
                                         <span class="text-gray-500 font-medium">Amazon Pay</span>
-                                    <% } else if (order.paymentMethod === 'cod') { %>
+                                    <% } else if (order.paymentMethod === 'COD') { %>
                                         <span class="text-gray-500 font-medium">Cash on Delivery</span>
                                     <% } else { %>
                                         <span class="text-gray-500 font-medium">Card</span>    
@@ -131,7 +135,11 @@
                             <div class="w-full flex gap-3.5 md:flex-row flex-col">
                                 <ul class="grid w-full md:grid-cols-2">
                                     <li class="ml-0">
-                                        <input type="radio" id="hosting-small" name="hosting" value="hosting-small" class="hidden peer" required />
+                                        <% if(order.paymentMethod === 'COD'){ %>
+                                            <input type="radio" disabled id="hosting-small" name="hosting" value="hosting-small" class="hidden peer" required />
+                                        <% } else { %>
+                                            <input type="radio" id="hosting-small" name="hosting" value="hosting-small" class="hidden peer" required />
+                                        <% } %>
                                         <label for="hosting-small" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer null:hover:text-gray-300 null:border-gray-700 null:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 null:text-gray-400 null:bg-gray-800 null:hover:bg-gray-700">                           
                                             <div class="block">
                                                 <div class="w-full text-lg font-semibold flex inline-flex">
@@ -143,6 +151,9 @@
                                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
                                             </svg>
                                         </label>
+                                        <% if(order.paymentMethod === 'COD'){ %>
+                                            <span class="mx-2 my-3 text-red-500">Note: Not eligible for refund.</span>
+                                        <% } %>
                                     </li>
                                     
                                 </ul>

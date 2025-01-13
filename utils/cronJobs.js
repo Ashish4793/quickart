@@ -58,8 +58,7 @@ cron.schedule('0 */12 * * *', async () => {
 });
 
 
-
-cron.schedule('*/8 * * * *', async () => {
+cron.schedule('*/1 * * * *', async () => {
     try {
         const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000);
 
@@ -67,16 +66,31 @@ cron.schedule('*/8 * * * *', async () => {
         const ordersToUpdate = await Order.find({
             orderDate: { $lt: tenMinutesAgo },
             status: 'Pending',
-            paymentStatus : 'Unpaid'
+            paymentStatus: 'Unpaid'
         }).exec();
 
-        if (ordersToUpdate.length == 0) {
+        if (ordersToUpdate.length === 0) {
             return;
         }
-        // Update the status of the found orders
+
         for (const order of ordersToUpdate) {
-            const session = await stripe.checkout.sessions.expire(order.stripe_cs_id);
-            const deleteOrder = await Order.deleteOne({_id : order._id}).exec();
+            console.log('Ran cron job for order:', order._id);
+            
+            if (order.paymentMethod === 'COD') {
+                return;
+            }
+            // Check the session status before expiring
+            const session = await stripe.checkout.sessions.retrieve(order.stripe_cs_id);
+
+            if (session.status === 'open') {
+                await stripe.checkout.sessions.expire(order.stripe_cs_id);
+                console.log(`Expired session: ${order.stripe_cs_id}`);
+            } else {
+                console.log(`Session already finalized: ${order.stripe_cs_id}`);
+            }
+
+            // Delete the order after session handling
+            await Order.deleteOne({ _id: order._id }).exec();
         }
 
         console.log(`${ordersToUpdate.length} orders flushed.`);

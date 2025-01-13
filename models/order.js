@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 
-
 const orderSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
@@ -40,7 +39,8 @@ const orderSchema = new mongoose.Schema({
     },
     stripe_cs_id : {
         type: String,
-        required: true
+        required: true,
+        default : 'NA'
     },
     stripe_pi_id : {
         type: String,
@@ -54,7 +54,7 @@ const orderSchema = new mongoose.Schema({
     },
     paymentStatus : {
         type: String,
-        enum: ['Unpaid', 'Paid' , 'Refunded'],
+        enum: ['Unpaid', 'Paid', 'Refunded'],
         default : 'Unpaid',
         required: true
     },
@@ -62,6 +62,9 @@ const orderSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    shippedAt : {
+        type : Date
+    }
 }
 , { timestamps: true }
 );
@@ -92,7 +95,6 @@ orderSchema.pre('findOneAndUpdate', function (next) {
         });
     next();
 });
-
 
 
 const Order = mongoose.model('Order', orderSchema);

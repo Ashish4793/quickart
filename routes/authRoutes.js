@@ -24,7 +24,8 @@ passport.use(new GoogleStrategy({
         {
           email: profile.emails[0].value, 
           name: profile.displayName,
-          verified : true
+          verified : true,
+          authType : 'google'
         }
       );
 
@@ -100,7 +101,6 @@ router.post('/change-password' , changePasswordProcess);
 router.post('/request-password-reset' , requestForgotPasswordProcess);
 
 router.get('/resend-email-verification-email' , resendEmailVerification);
-
 
 
 export default router;

@@ -11,7 +11,7 @@ export const registerTrigger = async (req, res) => {
         res.redirect("/")
     } else {
         User.register({
-            username: req.body.username, name: req.body.name, email: req.body.username
+            username: req.body.username, name: req.body.name, email: req.body.username, authType : 'local'
         }, req.body.password, async function (err, user) {
             if (err) {
                 if (err.name === 'UserExistsError') {
@@ -70,6 +70,9 @@ export const requestForgotPasswordProcess = async (req, res) => {
             return res.redirect('/auth/forgot-password?emailSent=true');
         }
 
+        if (user.authType === 'google') {
+            return res.redirect('/auth/forgot-password?emailSent=true');
+        }
         //check token before generating another one 
         const checkToken = await Token.findOne({ userId: user._id }).exec();
 

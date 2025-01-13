@@ -17,6 +17,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    authType : {
+        type : String,
+        required : true,
+        enum : ['local', 'google']
+    },
     address: {
         type: [
             {

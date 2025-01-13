@@ -3,7 +3,7 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>QuicKart Order Confirmation</title>
+    <title>QuicKart Order Cancellation</title>
     <style media="all" type="text/css">
       @media all {
         .btn-primary table td:hover {
@@ -88,22 +88,21 @@
                     <h2 style="display: inline-block; vertical-align: middle; margin-left: 5px;">QuicKart</h2>
                   </div>
 
-                  <% const formattedDate=((date)=> new Date(new Date(date).setDate(new Date(date).getDate() +
-                  3)).toLocaleString('en-US', {timeZone: "Asia/Kolkata", day: '2-digit', month: 'long', year: 'numeric'
+                  <% const formattedDate=((date)=> new Date(new Date(date).setDate(new Date(date).getDate())).toLocaleString('en-US', {timeZone: "Asia/Kolkata", day: '2-digit', month: 'long', year: 'numeric'
                   }).replace(/(\d+)(?=\s)/, '$1' + (['th','st','nd','rd'][((n)=>n%100>10&&n%100
                   <20?0:[,1,2,3,0,0,0,0,0,0][n%10])(parseInt(RegExp.$1))])) )(orderData.orderDate); %>
 
-                  <h3 style="font-family: Helvetica, sans-serif; font-size: 18px; font-weight: bold; margin: 0; margin-bottom: 16px;">Thank you for shopping with us!</h3>
+                  <h3 style="font-family: Helvetica, sans-serif; font-size: 18px; font-weight: bold; margin: 0; margin-bottom: 16px;">Order Cancelled!</h3>
                   <p style="font-family: Helvetica, sans-serif; font-size: 16px; font-weight: normal; margin: 0; margin-bottom: 16px;">Hey <%= orderData.user.name %>,</p>
-                  <p style="font-family: Helvetica, sans-serif; font-size: 16px; font-weight: normal; margin: 0; margin-bottom: 16px;">Your order has been confirmed. Here are your order details:</p>
-                  <p style="font-family: Helvetica, sans-serif; font-size: 16px; font-weight: normal; margin: 0; margin-bottom: 8px;"><strong>Order ID:</strong> <%= orderData.orderNumber %></p>
-                  <p style="font-family: Helvetica, sans-serif; font-size: 16px; font-weight: normal; margin: 0; margin-bottom: 8px;"><strong>Estimated Delivery Date:</strong> <%= formattedDate %></p>
-                  <p style="font-family: Helvetica, sans-serif; font-size: 16px; font-weight: normal; margin: 0; margin-bottom: 16px;">
-                    <strong>Shipping Address:</strong> 
-                    <br>
-                    <%= address.name %><br>
-                    <%= address.streetAddress %>,<br><%= address.city %> <%= address.zip %>
-                  </p>
+                  <p style="font-family: Helvetica, sans-serif; font-size: 16px; font-weight: normal; margin: 0; margin-bottom: 16px;">Your order has been cancelled as per your request. Here are your refund details:</p>
+                  <p style="font-family: Helvetica, sans-serif; font-size: 16px; font-weight: normal; margin: 0; margin-bottom: 8px;"><strong>Order ID: </strong> <%= orderData.orderNumber %></p>
+                  <p style="font-family: Helvetica, sans-serif; font-size: 16px; font-weight: normal; margin: 0; margin-bottom: 8px;"><strong>Order Date: </strong> <%= formattedDate %></p>
+                  <p style="font-family: Helvetica, sans-serif; font-size: 16px; font-weight: normal; margin: 0; margin-bottom: 8px;"><strong>Refund ID: </strong> <%= orderData.stripe_pi_id %></p>
+                  <% if(orderData.paymentMethod === 'COD') { %>
+                       <p style="font-family: Helvetica, sans-serif; font-size: 16px; font-weight: normal; margin: 0; margin-bottom: 16px;"><strong>Refund Amount: </strong> $0</p>
+                  <% } else { %>
+                      <p style="font-family: Helvetica, sans-serif; font-size: 16px; font-weight: normal; margin: 0; margin-bottom: 16px;"><strong>Refund Amount: </strong> $<%= orderData.orderValue %></p>
+                  <% } %>
                 
                   <div style="border-top: 1px solid #eaebed; margin-bottom: 16px;"></div>
                   
@@ -128,7 +127,7 @@
                             <tbody>
                               <tr>
                                 <td style="font-family: Helvetica, sans-serif; font-size: 13px; vertical-align: top; border-radius: 411px; text-align: center; background-color: #0867ec;" valign="top" align="center" bgcolor="#0867ec"> 
-                                  <a href="<%= domain %>/account/order?order_no=<%= orderData.orderNumber %>" target="_blank" style="border: solid 2px #0867ec; border-radius: 314px; box-sizing: border-box; cursor: pointer; display: inline-block; font-size: 12px; margin: 0; padding: 8px 14px; text-decoration: none; text-transform: capitalize; background-color: #0867ec; border-color: #0867ec; color: #ffffff;">Track Your Order</a> 
+                                  <a href="<%= domain %>/track-refund-status?order_no=<%= orderData.orderNumber %>" target="_blank" style="border: solid 2px #0867ec; border-radius: 314px; box-sizing: border-box; cursor: pointer; display: inline-block; font-size: 12px; margin: 0; padding: 8px 14px; text-decoration: none; text-transform: capitalize; background-color: #0867ec; border-color: #0867ec; color: #ffffff;">Track Refund</a> 
                                 </td>
                               </tr>
                             </tbody>

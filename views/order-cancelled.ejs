@@ -53,13 +53,17 @@
                                     <div
                                         class="w-full justify-between items-center gap-4 flex sm:flex-row flex-col pb-8 border-b border-gray-200">
                                         <h5 class="text-gray-900 text-lg font-semibold leading-normal">Refund Amount:
-                                            <span class="text-gray-500 font-medium">$<%= order.orderValue %></span>
+                                            <% if(order.paymentMethod === 'COD' ){ %>
+                                                <span class="text-gray-500 font-medium">$0</span>
+                                            <% } else { %>
+                                                <span class="text-gray-500 font-medium">$<%= order.orderValue %></span>
+                                             <% } %>
                                         </h5>
                                         <h5 class="text-gray-900 text-lg font-semibold leading-normal">Refund Source:
                                             <% if(order.paymentMethod==='amazon_pay' ){ %>
                                                 <span class="text-gray-500 font-medium">Amazon Pay</span>
-                                                <% } else if (order.paymentMethod==='cod' ) { %>
-                                                    <span class="text-gray-500 font-medium">Cash on Delivery</span>
+                                                <% } else if (order.paymentMethod==='COD' ) { %>
+                                                    <span class="text-gray-500 font-medium">NA</span>
                                                     <% } else { %>
                                                         <span class="text-gray-500 font-medium">Card</span>
                                                         <% } %>
