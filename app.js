@@ -104,47 +104,66 @@ app.post('/webhook' , express.raw({ type: 'application/json' }) ,webHookControll
 
   
   
-app.get('/test' , async (req,res ) => {
-    if(req.isAuthenticated()){
-        res.redirect('/')
-    } else {
-        res.redirect('/auth/login');
-    }
-})
+// app.get('/test' , async (req,res ) => {
+//     if(req.isAuthenticated()){
+//         res.render('unauthorized');
+//     } else {
+//         res.redirect('/auth/login');
+//     }
+// })
 
 
 
 
 app.get("/add-product", (req, res) => {
-    res.render('add-product');
+    if (req.isAuthenticated()) {
+        if (!req.user.email == 'ashishahirwar4793@gmail.com') {
+            return res.status(403).render('unauthorized');
+        }
+        res.render('add-product');
+    } else {
+        res.redirect('/auth/login');
+    }
 });
 
 
 app.post("/add-product", (req, res) => {
-    const data = req.body;
-    const product = new Product({
-        name: data.name,
-        description: data.description,
-        price: data.price,
-        category: data.category,
-        isFPA: data.fpa,
-        brand: data.brand,
-        model: data.model,
-        color: data.color,
-        imageUrl: data.imageUrl,
-        stockQuantity: data.qty,
-        detailedDescription: data.detailedDescription
-    });
-
-    product.save((err) => {
-        if (err) {
-            console.log(err);
-            return res.status(500).json({ error: err });
-        } else {
-            return res.status(200).json("Product saved to DB!")
-            // res.send("Product saved to DB!")
+    if (req.isAuthenticated()) {
+        if (!req.user.email == 'ashishahirwar4793@gmail.com') {
+            return res.status(403).render('unauthorized');
         }
-    });
+        const data = req.body;
+    
+        const product = new Product({
+            name: data.name,
+            description: data.description,
+            price: data.price,
+            category: data.category,
+            isFPA: data.fpa,
+            brand: data.brand,
+            model: data.model,
+            color: data.color,
+            imageUrl: data.imageUrl,
+            stockQuantity: data.qty,
+            detailedDescription: data.detailedDescription,
+            utf1: data.utf1,
+            utf2: data.utf2,
+        });
+    
+        product.save((err) => {
+            if (err) {
+                console.log(err);
+                return res.status(500).json({ error: err });
+            } else {
+                return res.status(200).json(product)
+                // res.send("Product saved to DB!")
+            }
+        });
+
+    } else {
+        res.redirect('/auth/login');
+    }
+    
 });
 
 

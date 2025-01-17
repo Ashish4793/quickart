@@ -14,11 +14,11 @@
 
     <!-- Total Payable Amount -->
     <div class="mb-6 text-center">
-        <p class="text-lg font-semibold">Total Payable Amount: ₹5,000</p>
+        <p class="text-lg font-semibold">Total Payable Amount: $<%= amount %></p>
     </div>
 
     <form action="/process-cod-order" method="POST" id="myForm" class="max-w-sm mx-auto">
-        <div id="captcha" class="text-3xl unselectable text-center border border-indigo-300 font-bold mb-2"></div>
+        <div id="captcha" class="text-3xl unselectable text-center border-2 rounded-xl border-black font-bold mb-2"></div>
         <div style="float: right;" onclick="refreshCaptcha()" class="badge badge-success mb-4 unselectable">
             <svg class="w-[12px] h-[12px] text-black mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 1v5h-5M2 19v-5h5m10-4a8 8 0 0 1-14.947 3.97M1 10a8 8 0 0 1 14.947-3.97"/>
@@ -29,8 +29,9 @@
             class="w-full border-2 border-gray-300 focus:outline-none focus:border-indigo-500 rounded-md py-2 px-4 mb-4">
         <br>
         <div class="flex justify-center mb-3">
-            <button
-            class="btn btn-primary">Place COD Order</button>
+            <button type="submit" data-modal-target="default-modal" data-modal-toggle="default-modal" class="text-center mt-3 px-5 py-2 rounded-[100px] bg-indigo-600 flex items-center justify-center text-md text-white shadow-sm transition-all duration-500 hover:bg-indigo-700 hover:shadow-indigo-400" style="box-sizing: border-box;">
+                Place Order
+            </button>
         </div>
 
     </form>

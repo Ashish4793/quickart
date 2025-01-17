@@ -1,0 +1,34 @@
+<%- include('partials/header'); -%>
+
+<%- include('partials/navbar2'); -%>
+
+
+<div class="max-w-md my-12 mx-auto bg-white p-8 rounded-lg shadow-lg text-center space-y-6">
+    <div class="flex justify-center">
+        <img src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" alt="Access Denied" class="w-32 h-32 object-cover rounded-full mb-4">
+    </div>
+    <div class="space-y-4">
+        <h1 class="text-4xl font-bold text-red-600 flex items-center justify-center gap-3">
+            <i class="fas fa-lock"></i>
+            Access Denied
+        </h1>
+        <p class="text-gray-600 text-lg">
+            You do not have permission to access this page.
+        </p>
+        <p class="text-gray-500">
+            Please contact the administrator if you believe this is an error.
+        </p>
+        <div class="flex justify-center">
+            <a href="/">
+            <button type="button" data-modal-target="default-modal" data-modal-toggle="default-modal" class="text-center mt-3 px-5 py-2 rounded-[100px] bg-indigo-600 flex items-center justify-center text-md text-white shadow-sm transition-all duration-500 hover:bg-indigo-700 hover:shadow-indigo-400" style="box-sizing: border-box;">
+                Return to Home
+            </button>
+            </a>
+        </div>
+        <div class="text-sm text-gray-400 mt-8">
+            Error Code: 403 Forbidden
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer'); -%>

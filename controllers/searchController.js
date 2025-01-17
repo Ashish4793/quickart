@@ -8,7 +8,7 @@ export const getSearch = async (req,res) => {
         try {
             const searchTerm = req.query.term;
             const regex = new RegExp(searchTerm, 'i');
-            const result = await Product.find({ name: regex });
+            const result = await Product.find({ name: regex }).sort({ createdAt: -1 });
             const foundCart = await Cart.findOne({ user: req.user._id });   
             const total = await calculateCartTotal(foundCart);
             res.render("search-result" , {fpa : result, term : searchTerm,cartValue : total , NoOfitems : foundCart.items.length, user : req.user});
@@ -20,7 +20,7 @@ export const getSearch = async (req,res) => {
     try {
         const searchTerm = req.query.term;
         const regex = new RegExp(searchTerm, 'i');
-        const result = await Product.find({ name: regex });
+        const result = await Product.find({ name: regex }).sort({ createdAt: -1 });
         res.render("search-result" , {fpa : result, term : searchTerm ,cartValue : 0 , NoOfitems : 0, user : null});
     } catch (error) {
         console.error(error);

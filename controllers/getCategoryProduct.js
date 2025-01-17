@@ -6,7 +6,7 @@ export const getCategoryProduct = async (req, res) => {
     if (req.isAuthenticated()) {
         const categoryTerm = req.query.category_name;
         try {
-            const foundProducts = await Product.find({ category: categoryTerm });
+            const foundProducts = await Product.find({ category: categoryTerm }).sort({ createdAt: -1 });
             const foundCart = await Cart.findOne({ user: req.user._id });
             const total = await calculateCartTotal(foundCart);
             res.render("category-items", { Products: foundProducts, cartValue: total, NoOfitems: foundCart.items.length, category: categoryTerm , user : req.user });
@@ -18,7 +18,7 @@ export const getCategoryProduct = async (req, res) => {
     } else {
         const categoryTerm = req.query.category_name;
         try {
-            const foundProducts = await Product.find({ category: categoryTerm });
+            const foundProducts = await Product.find({ category: categoryTerm }).sort({ createdAt: -1 });
             res.render("category-items", { Products: foundProducts, cartValue: 0, NoOfitems: 0, category: categoryTerm , user : null });
 
         } catch (error) {

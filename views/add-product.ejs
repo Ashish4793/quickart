@@ -2,101 +2,260 @@
 
     <%- include('partials/navbar2'); -%>
 
-        <div class="p-3 mx-5 mb-24 md:p-12">
-            <form action='/add-product' method='post' class="max-w-md mx-auto">
 
-                <h1 class="text-2xl font-bold mb-4">Add Product to Inventory</h1>
-
-                <div class="form-control">
-                    <div>
-                        <label class="label">Product Name</label>
-                        <input name="name" type="text" placeholder="Example: Sony TV" class="input input-bordered w-full" />
-                    </div>
-                    <div>
-                        <label class="label">Product Description</label>
-                        <input name="description" type="text" maxlength="75" placeholder="Example: OLED 4K TV"
-                            class="input input-bordered w-full" />
-                    </div>
-                    <div>
-                        <label class="label">Is FPA?</label>
-                        <select name="fpa" class="select select-bordered w-full">
-                            <option selected disabled value="">Select an option</option>
-                            <option value=true>Yes</option>
-                            <option value=false>No</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="label">Price</label>
-                        <input name="price" type="number" min="0" max="1000000" placeholder="Example: &#8377;89000"
-                            class="input input-bordered w-full" />
-                    </div>
-                    <div>
-                        <label class="label">Category</label>
-                        <select name="category" class="select select-bordered w-full">
-                            <option selected disabled value="">Select an option</option>
-                            <option value="Mobiles">Mobiles</option>
-                            <option value="Electronics">Electronics</option>
-                            <option value="Fashion">Fashion</option>
-                            <option value="Furniture">Furniture</option>
-                            <option value="Groceries">Groceries</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="label">Brand</label>
-                        <input name="brand" type="text" placeholder="Example: Sony" class="input input-bordered w-full" />
-                    </div>
-                    <div>
-                        <label class="label">Model</label>
-                        <input name="model" type="text" maxlength="50" placeholder="Example: Bravia OLED"
-                            class="input input-bordered w-full" />
-                    </div>
-                    <div>
-                        <label class="label">Color</label>
-                        <input name="color" type="text" maxlength="30" placeholder="Example: Black"
-                            class="input input-bordered w-full" />
-                    </div>
-                    <div>
-                        <label class="label">Product Image URL</label>
-                        <input name="imageUrl" type="text" placeholder="Example: Image URL" class="input input-bordered w-full" />
-                    </div>
-                    <div>
-                        <label class="label">Stock Quantity</label>
-                        <input name="qty" type="number" min="0" placeholder="Example: 150" class="input input-bordered w-full" />
-                    </div>
-                    <div>
-                        <label class="label">Detailed Description</label>
-                        <textarea name="detailedDescription" class="textarea textarea-bordered w-full"
-                            placeholder="Detailed Description"></textarea>
-                        <label class="label">
-                            <span class="label-text-alt text-red-500">Important! Use ' = ' commas for bulletin
-                                points.</span>
-                        </label>
-                    </div>
-                    <div id="utf" class="hidden mb-3">
-                        <div>
-                            <label class="label">RAM</label>
-                            <input type="text" name="utf1" placeholder="Example: 8GB" class="input input-bordered w-full" />
-                        </div>
-                        <div>
-                            <label class="label">Storage</label>
-                            <input type="text" name="utf2" placeholder="Example: 512GB" class="input input-bordered w-full" />
-                        </div>
-                    </div>
-                    <div class="form-control">
-                        <div class="form-control">
-                            <label class="label cursor-pointer">
-                              <span class="label-text">Add additional fields for Electronics.</span> 
-                              <input id="utfCheckbox" onchange="showUTFs()" type="checkbox" class="checkbox" />                    </div>
-                            </label>
-                          </div>
-                    
+        <section class="py-12 relative">
+            <div class="w-full max-w-7xl px-4 md:px-5 lg:px-5 mx-auto">
+                <div class="w-full flex-col justify-center items-center gap-4 inline-flex">
+                    <h2 class="text-center text-gray-900 text-4xl font-bold font-manrope leading-normal">Add Product to
+                        Inventory</h2>
+                    <p class="text-center text-gray-500 text-base font-normal leading-relaxed">Order billing is the
+                        process of generating invoices or bills for goods or services purchased by customers.</p>
                 </div>
-                <button class="mt-6 btn btn-success w-full">Add Product</button>
+                <form action="/add-product" method="post">
+                <div class="lg:my-14 my-8 grid lg:grid-cols-2 grid-cols-1 gap-8">
+                    <div class="w-full flex-col justify-start items-start gap-6 inline-flex">
+                        <h4 class="text-gray-900 text-xl font-semibold leading-8">Product Information</h4>
+                        <div class="w-full flex-col justify-start items-start gap-8 flex">
+                            <div class="w-full flex-col justify-start items-start gap-1.5 flex">
+                                <label for=""
+                                    class="flex gap-1 items-center text-gray-600 text-base font-medium leading-relaxed">Product
+                                    Name
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="7" height="7" viewBox="0 0 7 7"
+                                        fill="none">
+                                        <path
+                                            d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z"
+                                            fill="#EF4444" />
+                                    </svg>
+                                </label>
+                                <input name="name" type="text" required
+                                    class="w-full focus:outline-none text-gray-900 placeholder-gray-400 text-lg font-normal leading-relaxed px-5 py-3 rounded-lg shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] border border-gray-200 justify-start items-center gap-2 inline-flex"
+                                    placeholder="Sony Playstation 5">
+                            </div>
+                            <div class="w-full flex-col justify-start items-start gap-1.5 flex">
+                                <label for=""
+                                    class="flex gap-1 items-center text-gray-600 text-base font-medium leading-relaxed">Product
+                                    Description
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="7" height="7" viewBox="0 0 7 7"
+                                        fill="none">
+                                        <path
+                                            d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z"
+                                            fill="#EF4444" />
+                                    </svg>
+                                </label>
+                                <input name="description" type="text" required
+                                    class="w-full focus:outline-none text-gray-900 placeholder-gray-400 text-lg font-normal leading-relaxed px-5 py-3 rounded-lg shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] border border-gray-200 justify-start items-center gap-2 inline-flex"
+                                    placeholder="Sony Playstation 5 1TB SSD">
+                            </div>
+                            <div class="w-full flex-col justify-start items-start gap-1.5 flex">
+                                <label for=""
+                                    class="flex gap-1 items-center text-gray-600 text-base font-medium leading-relaxed">Product
+                                    Image URL
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="7" height="7" viewBox="0 0 7 7"
+                                        fill="none">
+                                        <path
+                                            d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z"
+                                            fill="#EF4444" />
+                                    </svg>
+                                </label>
+                                <input name="imageUrl" type="text" required
+                                    class="w-full focus:outline-none text-gray-900 placeholder-gray-400 text-lg font-normal leading-relaxed px-5 py-3 rounded-lg shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] border border-gray-200 justify-start items-center gap-2 inline-flex"
+                                    placeholder="Image URL">
+                            </div>
 
+                            <div class="w-full justify-start items-start gap-7 flex sm:flex-row flex-col">
+                                <div class="w-full flex-col justify-start items-start gap-1.5 flex">
+                                    <label for=""
+                                        class="flex gap-1 items-center text-gray-600 text-base font-medium leading-relaxed">Selling
+                                        Price
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="7" height="7" viewBox="0 0 7 7"
+                                            fill="none">
+                                            <path
+                                                d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z"
+                                                fill="#EF4444" />
+                                        </svg>
+                                    </label>
+                                    <input required name="price" type="number" min="1" max="1000000"
+                                        class="w-full focus:outline-none text-gray-900 placeholder-gray-400 text-lg font-normal leading-relaxed px-5 py-3 rounded-lg shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] border border-gray-200 justify-start items-center gap-2 inline-flex"
+                                        placeholder="$100">
+                                </div>
+                                <div class="w-full flex-col justify-start items-start gap-1.5 flex">
+                                    <label for=""
+                                        class="flex gap-1 items-center text-gray-600 text-base font-medium leading-relaxed">Category
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="7" height="7" viewBox="0 0 7 7"
+                                            fill="none">
+                                            <path
+                                                d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z"
+                                                fill="#EF4444" />
+                                        </svg>
+                                    </label>
+                                    <select name="category" id="category" required
+                                        class="w-full focus:outline-none text-gray-900 placeholder-gray-400 text-lg font-normal leading-relaxed px-5 py-3 rounded-lg shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] border border-gray-200 justify-start items-center gap-2 inline-flex">
+                                        <option selected disabled value="" selected>Select a option</option>
+                                        <option value="Mobiles">Mobiles</option>
+                                        <option value="Electronics">Electronics</option>
+                                        <option value="Fashion">Fashion</option>
+                                        <option value="Furniture">Furniture</option>
+                                        <option value="Groceries">Groceries</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="w-full justify-start items-start gap-7 flex sm:flex-row flex-col">
+                                <div class="w-full flex-col justify-start items-start gap-1.5 flex">
+                                    <label for=""
+                                        class="flex gap-1 items-center text-gray-600 text-base font-medium leading-relaxed">Brand
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="7" height="7" viewBox="0 0 7 7"
+                                            fill="none">
+                                            <path
+                                                d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z"
+                                                fill="#EF4444" />
+                                        </svg>
+                                    </label>
+                                    <input name="brand" type="text" required
+                                        class="w-full focus:outline-none text-gray-900 placeholder-gray-400 text-lg font-normal leading-relaxed px-5 py-3 rounded-lg shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] border border-gray-200 justify-start items-center gap-2 inline-flex"
+                                        placeholder="Sony">
+                                </div>
+                                <div class="w-full flex-col justify-start items-start gap-1.5 flex">
+                                    <label for=""
+                                        class="flex gap-1 items-center text-gray-600 text-base font-medium leading-relaxed">Model
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="7" height="7" viewBox="0 0 7 7"
+                                            fill="none">
+                                            <path
+                                                d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z"
+                                                fill="#EF4444" />
+                                        </svg>
+                                    </label>
+                                    <input name="model" type="text" required
+                                        class="w-full focus:outline-none text-gray-900 placeholder-gray-400 text-lg font-normal leading-relaxed px-5 py-3 rounded-lg shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] border border-gray-200 justify-start items-center gap-2 inline-flex"
+                                        placeholder="Playstation 5">
+                                </div>
+                            </div>
+                            <div class="w-full justify-start items-start gap-7 flex sm:flex-row flex-col">
+                                <div class="w-full flex-col justify-start items-start gap-1.5 flex">
+                                    <label for=""
+                                        class="flex gap-1 items-center text-gray-600 text-base font-medium leading-relaxed">Color
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="7" height="7" viewBox="0 0 7 7"
+                                            fill="none">
+                                            <path
+                                                d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z"
+                                                fill="#EF4444" />
+                                        </svg>
+                                    </label>
+                                    <input required name="color" type="text"
+                                        class="w-full focus:outline-none text-gray-900 placeholder-gray-400 text-lg font-normal leading-relaxed px-5 py-3 rounded-lg shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] border border-gray-200 justify-start items-center gap-2 inline-flex"
+                                        placeholder="White">
+                                </div>
+                                <div class="w-full flex-col justify-start items-start gap-1.5 flex">
+                                    <label for=""
+                                        class="flex gap-1 items-center text-gray-600 text-base font-medium leading-relaxed">Is
+                                        Front Page Article?
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="7" height="7" viewBox="0 0 7 7"
+                                            fill="none">
+                                            <path
+                                                d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z"
+                                                fill="#EF4444" />
+                                        </svg>
+                                    </label>
+                                    <select name="fpa" id="fpa" required
+                                        class="w-full focus:outline-none text-gray-900 placeholder-gray-400 text-lg font-normal leading-relaxed px-5 py-3 rounded-lg shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] border border-gray-200 justify-start items-center gap-2 inline-flex">
+                                        <option disabled value="" selected>Select a option</option>
+                                        <option value="true">Yes</option>
+                                        <option value="false">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full flex-col justify-start items-start gap-6 inline-flex">
+                        <h4 class="text-gray-900 text-xl font-semibold leading-8">Inventory Informatiom</h4>
+                        <div class="w-full flex-col justify-start items-start gap-8 flex">
+                            
+                            <div class="w-full flex-col justify-start items-start gap-1.5 flex">
+                                <label for=""
+                                    class="flex gap-1 items-center text-gray-600 text-base font-medium leading-relaxed">Detailed
+                                    Description
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="7" height="7" viewBox="0 0 7 7"
+                                        fill="none">
+                                        <path
+                                            d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z"
+                                            fill="#EF4444" />
+                                    </svg>
+                                </label>
+                                <textarea name="detailedDescription" required
+                                    class="block w-full h-44 px-4 py-2 text-sm font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none leading-relaxed resize-none"
+                                    placeholder="Enter a description..."></textarea>
+                                <label class="label">
+                                    <span class="label-text-alt text-red-500">Important Note: Use ' = ' sign for
+                                        bulletin
+                                        points.</span>
+                                </label>
+                            </div>
+                            <div class="w-full justify-start items-start gap-7 flex sm:flex-row flex-col">
+                                <div class="w-full flex-col justify-start items-start gap-1.5 flex">
+                                    <label for=""
+                                        class="flex gap-1 items-center text-gray-600 text-base font-medium leading-relaxed">Stock
+                                        Quantity
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="7" height="7" viewBox="0 0 7 7"
+                                            fill="none">
+                                            <path
+                                                d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z"
+                                                fill="#EF4444" />
+                                        </svg>
+                                    </label>
+                                    <input name="qty" required type="number" min="0" max="1000000"
+                                        class="w-full focus:outline-none text-gray-900 placeholder-gray-400 text-lg font-normal leading-relaxed px-5 py-3 rounded-lg shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] border border-gray-200 justify-start items-center gap-2 inline-flex"
+                                        placeholder="500">
+                                </div>
+                                <div class="w-full flex-col justify-start items-start gap-1.5 flex">
+                                    <label for=""
+                                        class="flex gap-1 items-center text-gray-600 text-base font-medium leading-relaxed">SKU ID
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="7" height="7" viewBox="0 0 7 7"
+                                            fill="none">
+                                            <path
+                                                d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z"
+                                                fill="#EF4444" />
+                                        </svg>
+                                    </label>
+                                    <input disabled type="text"
+                                        class="w-full focus:outline-none text-gray-900 placeholder-gray-400 text-lg font-normal leading-relaxed px-5 py-3 rounded-lg shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] border border-gray-200 justify-start items-center gap-2 inline-flex"
+                                        placeholder="Will be auto-generated">
+                                </div>
+                            </div>
+                            <label class="label cursor-pointer">
+                                <span class="label-text">Add additional fields for information.</span>
+                                <input id="utfCheckbox" onchange="showUTFs()" type="checkbox" class="checkbox ml-2" />
+                            </label>
+                            <div id="utf" class="hidden w-full justify-start items-start gap-7 flex sm:flex-row flex-col">
+                                <div class="w-full flex-col justify-start items-start gap-1.5 flex">
+                                    <label for=""
+                                        class="flex gap-1 items-center text-gray-600 text-base font-medium leading-relaxed">UTF 1
+                                    </label>
+                                    <input name="utf1" type="text"
+                                        class="w-full focus:outline-none text-gray-900 placeholder-gray-400 text-lg font-normal leading-relaxed px-5 py-3 rounded-lg shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] border border-gray-200 justify-start items-center gap-2 inline-flex"
+                                        placeholder="Ex: RAM:8GB,SIZE:M">
+                                </div>
+                                <div class="w-full flex-col justify-start items-start gap-1.5 flex">
+                                    <label for=""
+                                        class="flex gap-1 items-center text-gray-600 text-base font-medium leading-relaxed">UTF 2
+                                    </label>
+                                    <input name="utf2" type="text"
+                                        class="w-full focus:outline-none text-gray-900 placeholder-gray-400 text-lg font-normal leading-relaxed px-5 py-3 rounded-lg shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] border border-gray-200 justify-start items-center gap-2 inline-flex"
+                                        placeholder="Ex: RAM:8GB,SIZE:M">
+                                        
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button
+                    class="mx-auto sm:w-fit w-full px-7 py-3 bg-indigo-600 hover:bg-indigo-700 transition-all duration-700 ease-in-out rounded-xl shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] justify-center items-center flex">
+                    <span class="px-2 text-center text-white text-lg font-semibold leading-8">Add Product</span>
+                </button>
             </form>
+            </div>
+        </section>
 
-        </div>
 
+        
         <script>
             function showUTFs() {
                 const utfContainer = document.getElementById("utf");

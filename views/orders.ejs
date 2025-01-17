@@ -20,7 +20,7 @@
                   <% orders.forEach((order) => { %>
                       <div class="flex flex-wrap my-4 border border-gray-200 rounded-2xl px-4 items-center gap-y-4 py-6" >
                         <div class="relative me-4">
-                          <img class="w-16 object-cover h-14" onerror="this.src='https://placehold.co/400?text=Product image not available&font=pt-sans'" src="<%= order.products[0].product.imageUrl %>" alt="product image" >
+                          <img class="w-16 h-14 object-contain rounded-xl" onerror="this.src='https://placehold.co/400?text=Product image not available&font=pt-sans'" src="<%= order.products[0].product.imageUrl %>" alt="product image">
                           <% if(order.products.length > 1) { %>
                             <div class="absolute inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-black bg-gray-200 rounded-full left-auto bottom-0 right-0">
                               +<%= (order.products.length - 1) %>

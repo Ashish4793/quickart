@@ -51,12 +51,14 @@ const productSchema = new mongoose.Schema({
     utf1 : {
         type : String,
         required : true,
-        default : 'NA'
+        default : 'NA',
+        set: (value) => (value === "" ? "NA" : value),
     },
     utf2 : {
         type : String,
         required : true,
-        default : 'NA'
+        default : 'NA',
+        set: (value) => (value === "" ? "NA" : value),
     },
     createdAt: {
       type: Date,

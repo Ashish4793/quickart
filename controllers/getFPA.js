@@ -8,7 +8,8 @@ export const getFPA = async (req,res) => {
     if(req.isAuthenticated()){
         try {
             let userCart = await Cart.findOne({ user: req.user._id });
-            const foundFPA = await Product.find({ isFPA: true }).sort({ createdAt: -1 });                const foundCart = await Cart.findOne({ user: req.user._id });   
+            const foundFPA = await Product.find({ isFPA: true }).sort({ createdAt: -1 });                
+            const foundCart = await Cart.findOne({ user: req.user._id });   
 
             if (!userCart) {
                 const newCart = new Cart({ user: req.user._id, items: [] });

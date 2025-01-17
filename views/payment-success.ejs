@@ -1,0 +1,58 @@
+
+
+<%- include('partials/header'); -%>
+
+
+    <%- include('partials/navbar2'); -%>
+
+<!-- <div class="m-4 my-24 p-6 md:mx-64 card border-2 border-gray-200 rounded-xl text-center">
+    <svg fill="#2AAA8A"xmlns="http://www.w3.org/2000/svg" height="6em" viewBox="0 0 32 32" fill="currentColor"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM17.4571 9.45711L11 15.9142L6.79289 11.7071L8.20711 10.2929L11 13.0858L16.0429 8.04289L17.4571 9.45711Z"></path></svg>
+    <h1 class="text-2xl font-bold text-[#2AAA8A]0 my-4">Payment Successful!</h1>
+    
+    <p class="text-gray-600 mb-2">Your payment against Order Number : 43434 has been processed succesfully!</p>
+    <span class="text-gray-700 text-xs">Transaction ID : cs_test284724y83y24783287423492371</span>
+    <div class="my-5">
+        <a href="/account/orders">
+            <button 
+            class="w-48 text-center bg-indigo-600 rounded-xl py-2 px-3 text-sm font-semibold text-lg text-white transition-all duration-500 hover:bg-indigo-700">Back to Orders</button>        
+        </a>
+    </div>
+</div> -->
+<div class="min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-white rounded-lg shadow-lg p-8 text-center">
+        <div class="mb-8">
+            <div class="w-24 h-24 mx-auto mb-4 bg-green-100 rounded-full flex items-center justify-center">
+                <svg class="w-16 h-16 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+            <h1 class="text-3xl font-bold text-green-600 mb-2" role="heading">Payment Successful!</h1>
+            <p class="text-gray-600 text-lg">Thank you! Your payment has been successfully processed.</p>
+        </div>
+        
+        <div class="bg-gray-50 rounded-lg p-6 mb-8">
+            <div class="space-y-4">
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Order ID</span>
+                    <span class="font-medium">#<%= orderNumber %></span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Amount Paid</span>
+                    <span class="font-medium">$<%= amount %></span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Payment Method</span>
+                    <span class="font-medium">Stripe</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="space-y-4">
+            <a href="/" class="block w-full bg-green-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-green-700 transition-colors" role="button">Continue Shopping</a>
+            <a href="/account/orders" class="block w-full bg-gray-100 text-gray-700 py-3 px-4 rounded-lg font-medium hover:bg-gray-200 transition-colors" role="button">View Order Details</a>
+        </div>
+    </div>
+</div>
+
+
+<%- include('partials/footer'); -%>
