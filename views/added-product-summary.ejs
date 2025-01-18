@@ -1,0 +1,99 @@
+<%- include('partials/header'); -%>
+
+<%- include('partials/navbar2'); -%>
+
+<div class="flex justify-center items-center mx-3 py-16">
+  <div class="w-full max-w-4xl">
+    <div class="-m-1.5 overflow-x-auto">
+      <div class="p-1.5 min-w-full inline-block align-middle">
+        <h2 class="font-semibold text-2xl text-center mt-3 mb-8">Added Product Details</h2>
+        <div class="border rounded-lg overflow-hidden">
+          <table class="min-w-full max-w-full divide-y divide-gray-200">
+            <thead>
+              <tr>
+                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Name</th>
+                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Value</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">Product Name</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800"><%= product.name %></td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">Product Description</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800"><%= product.description %></td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">Price</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">$<%= product.price %></td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">Category</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800"><%= product.category %></td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">FPA</td>
+                <% if(product.isFPA) { %>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">Yes</td>
+                <% } else { %>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">No</td>
+                <% } %>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">Brand</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800"><%= product.brand %></td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">Brand</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800"><%= product.brand %></td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">Model</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800"><%= product.model %></td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">Color</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800"><%= product.color %></td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 text-sm font-medium text-gray-800">Image URL</td>
+                <td class="px-6 py-4 text-xs text-gray-800">
+                  <div class="overflow-hidden break-words whitespace-normal w-full max-w-xl">
+                    <%= product.imageUrl %>
+                  </div>
+                </td>
+              </tr> 
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">Stock Quantity</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800"><%= product.stockQuantity %></td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 text-sm font-medium text-gray-800">Detailed Description</td>
+                <td class="px-6 py-4 text-xs text-gray-800">
+                  <div class="overflow-hidden break-words whitespace-normal w-full max-w-xl">
+                    <%= product.detailedDescription %>
+                  </div>
+                </td>
+              </tr>                  
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">UTF 1</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800"><%= product.utf1 %></td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">UTF 2</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800"><%= product.utf2 %></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <a href="/add-product">
+          <button class="px-4 my-5 py-2 bg-black text-white">Add another product</button>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<%- include('partials/footer'); -%>

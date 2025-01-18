@@ -17,7 +17,7 @@ const readFile = promisify(fs.readFile);
 // });
 
 const transporter = nodemailer.createTransport({
-  host: 'smtp.zoho.com',
+  host: 'smtp.zoho.in',
   port: 465,
   secure: true, // Use SSL
   auth: {

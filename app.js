@@ -104,20 +104,20 @@ app.post('/webhook' , express.raw({ type: 'application/json' }) ,webHookControll
 
   
   
-// app.get('/test' , async (req,res ) => {
-//     if(req.isAuthenticated()){
-//         res.render('unauthorized');
-//     } else {
-//         res.redirect('/auth/login');
-//     }
-// })
+app.get('/test' , async (req,res ) => {
+    if(req.isAuthenticated()){
+        res.render('added-product-summary');
+    } else {
+        res.redirect('/auth/login');
+    }
+})
 
 
 
 
 app.get("/add-product", (req, res) => {
     if (req.isAuthenticated()) {
-        if (!req.user.email == 'ashishahirwar4793@gmail.com') {
+        if (req.user.email != 'ashishahirwar4793@gmail.com') {
             return res.status(403).render('unauthorized');
         }
         res.render('add-product');
@@ -129,7 +129,7 @@ app.get("/add-product", (req, res) => {
 
 app.post("/add-product", (req, res) => {
     if (req.isAuthenticated()) {
-        if (!req.user.email == 'ashishahirwar4793@gmail.com') {
+        if (req.user.email != 'ashishahirwar4793@gmail.com') {
             return res.status(403).render('unauthorized');
         }
         const data = req.body;
@@ -155,8 +155,7 @@ app.post("/add-product", (req, res) => {
                 console.log(err);
                 return res.status(500).json({ error: err });
             } else {
-                return res.status(200).json(product)
-                // res.send("Product saved to DB!")
+                return res.render('added-product-summary' , {product : product});
             }
         });
 
