@@ -483,10 +483,19 @@ export const codOrderPaymentResponse = async (req,res) => {
                 { new: true }
             ).exec();
 
+
+            //Constructing Mail data
+            const data = {
+                name : updateOrder.user.name,
+                orderID : updateOrder.orderNumber,
+                amount : updateOrder.orderValue,
+                cs_id : updateOrder.stripe_cs_id,
+                link : `${process.env.DOMAIN}/account/order?order_no=${updateOrder.orderNumber}`
+            }
             // send email
             const event = new Date();
             const timestamp = event.toLocaleString('en-GB', { timeZone: 'Asia/Kolkata' });
-            // await sendMail(updateOrder.user.email, 'Payment Successful!', 'templates/mailer/payment-successful-template.ejs', { orderNumber : rto_no, paymentID : cs_id , timestamp: timestamp, domain: process.env.DOMAIN });
+            await sendMail(updateOrder.user.email, 'Payment Successful!', 'templates/mailer/payment-success-template.ejs', {  data : data , timestamp: timestamp });
 
             return res.render('payment-success', {orderNumber : rto_no, amount : fetchOrder.orderValue});
         } else {
