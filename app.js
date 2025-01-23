@@ -104,13 +104,13 @@ app.post('/webhook' , express.raw({ type: 'application/json' }) ,webHookControll
 
   
   
-app.get('/test' , async (req,res ) => {
-    if(req.isAuthenticated()){
-        res.render('invoice');
-    } else {
-        res.redirect('/auth/login');
-    }
-})
+// app.get('/test' , async (req,res ) => {
+//     if(req.isAuthenticated()){
+//         res.render('invoice');
+//     } else {
+//         res.redirect('/auth/login');
+//     }
+// })
 
 
 
