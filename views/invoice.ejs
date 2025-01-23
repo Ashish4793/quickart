@@ -1,0 +1,270 @@
+<%- include('partials/header'); -%>
+<%- include('partials/navbar2'); -%>
+
+<style>
+    @media print {
+      header, footer { display: none; }
+      @page { size: landscape; margin: 0; }
+      body { margin: 0; padding: 0; }
+      #myDiv { width: 100%; height: 100%; }
+    }
+</style>
+
+<!-- Mobile Warning -->
+<div class="fixed md:hidden inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+  <div class="bg-white p-6 rounded-lg shadow-xl text-center max-w-sm mx-4">
+    <h2 class="text-xl font-bold mb-4 text-red-600">Mobile View Not Supported</h2>
+    <p class="mb-4 text-gray-700">Please open this invoice on a desktop or laptop for the best viewing experience.</p>
+
+  </div>
+</div>
+
+<!-- Existing Invoice Content -->
+<div class="m-6 border hidden md:block border-gray-200 rounded-lg">
+
+  <% const orderDate=((date)=> new Date(new Date(date).setDate(new Date(date).getDate())).toLocaleString('en-US', {
+    timeZone: "Asia/Kolkata", day: '2-digit', month: 'long', year: 'numeric'
+    }).replace(/(\d+)(?=\s)/, '$1' + (['th','st','nd','rd'][((n)=>n%100>10&&n%100
+    <20?0:[,1,2,3,0,0,0,0,0,0][n%10])(parseInt(RegExp.$1))])) )(order.orderDate); %>
+
+      <!-- Invoice -->
+      <div id="myDiv" class="max-w-[85rem] px-4 sm:px-6 lg:px-8 mx-auto my-4 sm:my-10">
+        <!-- Grid -->
+        <div class="mb-5 pb-5 flex justify-between items-center border-b border-gray-200">
+
+          <div>
+            <a href="/" class="flex justify-center lg:justify-start">
+              <svg class="h-7 mt-1" viewBox="0 0 256 229" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                preserveAspectRatio="xMidYMid">
+                <title>PaLM</title>
+                <g>
+                  <path
+                    d="M128,228.5418 L128,228.5418 C137.895187,228.5418 145.909841,220.527146 145.909841,210.631959 L145.909841,55.4133387 L110.090159,55.4133387 L110.090159,210.631959 C110.090159,220.527146 118.104813,228.5418 128,228.5418 Z"
+                    fill="#F9AB00"></path>
+                  <path
+                    d="M199.355791,112.05321 C180.043012,92.7553568 151.193244,88.8450415 128,100.30734 L204.669044,176.976383 C207.833115,180.140455 213.280692,178.886766 214.62393,174.633179 C221.36997,153.275694 216.28059,128.992935 199.355791,112.05321 Z"
+                    fill="#5BB974"></path>
+                  <path
+                    d="M56.6442092,112.05321 C75.9569876,92.7553568 104.806756,88.8450415 128,100.30734 L51.3309565,176.976383 C48.1668846,180.140455 42.719308,178.886766 41.37607,174.633179 C34.6300299,153.275694 39.7194097,128.992935 56.6442092,112.05321 Z"
+                    fill="#129EAF"></path>
+                  <path
+                    d="M193.669416,52.5477642 C163.162987,52.5477642 137.268343,72.5470864 128,100.30734 L249.249622,100.30734 C254.219603,100.30734 257.532924,95.0537863 255.279269,90.6211007 C243.757271,68.0099267 220.504328,52.5477642 193.669416,52.5477642 Z"
+                    fill="#AF5CF7"></path>
+                  <path
+                    d="M140.671212,20.1011026 C119.089854,41.6824607 114.925816,74.1141975 128,100.30734 L213.743363,14.5639768 C217.265632,11.0417081 215.892544,4.98221194 211.161361,3.44495061 C187.012925,-4.39060475 159.640719,1.13159617 140.671212,20.1011026 Z"
+                    fill="#FF8BCB"></path>
+                  <path
+                    d="M115.328788,20.1011026 C136.910146,41.6824607 141.074184,74.1141975 128,100.30734 L42.2566371,14.5639768 C38.7343684,11.0417081 40.1074562,4.98221194 44.8386392,3.44495061 C68.9870745,-4.39060475 96.3592812,1.13159617 115.328788,20.1011026 Z"
+                    fill="#FA7B17"></path>
+                  <path
+                    d="M62.3305837,52.5477642 C92.8370125,52.5477642 118.731657,72.5470864 128,100.30734 L6.75037772,100.30734 C1.7803969,100.30734 -1.53292365,95.0537863 0.720731316,90.6211007 C12.2427289,68.0099267 35.4956722,52.5477642 62.3305837,52.5477642 Z"
+                    fill="#4285F4"></path>
+                </g>
+              </svg>
+              <p class="text-2xl ml-2 font-semibold">QuicKart</p>
+            </a>
+          </div>
+
+          <!-- Col -->
+
+          <div class="inline-flex gap-x-2">
+            <h2 class="text-2xl font-semibold text-gray-800">Tax Invoice</h2>
+          </div>
+          <!-- Col -->
+        </div>
+        <!-- End Grid -->
+
+        <!-- Grid -->
+        <div class="grid md:grid-cols-2 gap-3">
+          <div>
+            <div class="grid space-y-3">
+
+              <dl class="flex flex-col sm:flex-row gap-x-3 text-sm">
+                <dt class="min-w-36 max-w-[200px] text-gray-500">
+                  Billed to:
+                </dt>
+                <dd class="font-medium text-gray-800">
+                  <span class="block font-semibold">
+                    <%= address.name %>
+                  </span>
+                  <address class="not-italic font-normal">
+                    <%= cust_email %><br>
+                  </address>
+                </dd>
+              </dl>
+
+              <dl class="flex flex-col sm:flex-row gap-x-3 text-sm">
+                <dt class="min-w-36 max-w-[200px] text-gray-500">
+                  Shipping address:
+                </dt>
+                <dd class="font-medium text-gray-800">
+                  <span class="block font-semibold">
+                    <%= address.name %>
+                  </span>
+                  <address class="not-italic font-normal">
+                    <%= address.streetAddress %><br>
+                      <%= address.city %>, <%= address.zip %><br>
+                          Tel : <%= address.phone %><br>
+                  </address>
+                </dd>
+              </dl>
+            </div>
+          </div>
+          <!-- Col -->
+
+          <div>
+            <div class="grid space-y-3">
+              <dl class="flex flex-col sm:flex-row gap-x-3 text-sm">
+                <dt class="min-w-36 max-w-[200px] text-gray-500">
+                  Invoice number:
+                </dt>
+                <dd class="font-bold text-gray-800">
+                  INV-<%= order.orderNumber %>
+                </dd>
+              </dl>
+
+              <dl class="flex flex-col sm:flex-row gap-x-3 text-sm">
+                <dt class="min-w-36 max-w-[200px] text-gray-500">
+                  Order ID:
+                </dt>
+                <dd class="font-medium text-gray-800">
+                  <%= order.orderNumber %>
+                </dd>
+              </dl>
+
+              <dl class="flex flex-col sm:flex-row gap-x-3 text-sm">
+                <dt class="min-w-36 max-w-[200px] text-gray-500">
+                  Billing Date:
+                </dt>
+                <dd class="font-medium text-gray-800">
+                  <%= orderDate %>
+                </dd>
+              </dl>
+
+              <dl class="flex flex-col sm:flex-row gap-x-3 text-sm">
+                <dt class="min-w-36 max-w-[200px] text-gray-500">
+                  Billing method:
+                </dt>
+                <dd class="font-medium uppercase text-gray-800">
+                  <%= order.paymentMethod %>
+                </dd>
+              </dl>
+            </div>
+          </div>
+          <!-- Col -->
+        </div>
+        <!-- End Grid -->
+
+        <!-- Table -->
+        <div class="mt-6 mx-2 border border-gray-200 p-4 rounded-lg space-y-4">
+          <div class="hidden sm:grid sm:grid-cols-5">
+            <div class="sm:col-span-2 text-xs font-medium text-gray-500 uppercase">Item</div>
+            <div class="text-start text-xs font-medium text-gray-500 uppercase">Qty</div>
+            <div class="text-start text-xs font-medium text-gray-500 uppercase">Rate</div>
+            <div class="text-end text-xs font-medium text-gray-500 uppercase">Amount</div>
+          </div>
+
+          <div class="hidden sm:block border-b border-gray-200"></div>
+
+          <% order.products.forEach(product=> { %>
+            <div class="grid grid-cols-3 sm:grid-cols-5 gap-2">
+              <div class="col-span-full sm:col-span-2">
+                <p class="font-medium text-gray-800">
+                  <%= product.product.name %>
+                </p>
+              </div>
+              <div>
+                <p class="text-gray-800">
+                  <%= product.quantity %>
+                </p>
+              </div>
+              <div>
+                <p class="text-gray-800">$<%= product.product.price %>
+                </p>
+              </div>
+              <div>
+                <p class="sm:text-end text-gray-800">$<%= (product.product.price * product.quantity) %>
+                </p>
+              </div>
+            </div>
+            <% }); %>
+
+
+
+              <div class="sm:hidden border-b border-gray-200"></div>
+
+        </div>
+        <!-- End Table -->
+
+        <!-- Flex -->
+        <div class="mt-8 flex sm:justify-end">
+          <div class="w-full max-w-2xl sm:text-end space-y-2">
+            <!-- Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-1 gap-3 mx-4 sm:gap-2">
+              <dl class="grid sm:grid-cols-5 gap-x-3 text-sm">
+                <dt class="col-span-3 text-gray-500">Subtotal:</dt>
+                <% if (order.orderValue> 49 ){ %>
+                  <dd class="col-span-2 font-medium text-gray-800">$<%= order.orderValue %>.00</dd>
+                  <% } else { %>
+                    <dd class="col-span-2 font-medium text-gray-800">$<%= (order.orderValue - 9) %>.00</dd>
+                    <% } %>
+              </dl>
+
+              <dl class="grid sm:grid-cols-5 gap-x-3 text-sm">
+                <dt class="col-span-3 text-gray-500">Shipping Fees:</dt>
+                <% if (order.orderValue> 49 ){ %>
+                  <dd class="col-span-2 font-medium text-gray-800">+$0</dd>
+                  <% } else { %>
+                    <dd class="col-span-2 font-medium text-gray-800">+$9.00</dd>
+                    <% } %>
+              </dl>
+
+              <dl class="grid sm:grid-cols-5 gap-x-3 text-sm">
+                <dt class="col-span-3 text-gray-500">Total:</dt>
+                <dd class="col-span-2 font-medium text-gray-800">$<%= order.orderValue %>.00</dd>
+              </dl>
+
+
+              <dl class="grid sm:grid-cols-5 gap-x-3 text-sm">
+                <dt class="col-span-3 text-gray-500">Amount paid:</dt>
+                <dd class="col-span-2 font-medium text-gray-800">$<%= order.orderValue %>.00</dd>
+              </dl>
+
+              <dl class="grid sm:grid-cols-5 gap-x-3 text-sm">
+                <dt class="col-span-3 text-gray-500">Due balance:</dt>
+                <dd class="col-span-2 font-medium text-gray-800">$0.00</dd>
+              </dl>
+            </div>
+            <!-- End Grid -->
+          </div>
+        </div>
+        <!-- End Flex -->
+      </div>
+      <!-- End Invoice -->
+</div>
+
+<div class="flex hidden md:flex items-center justify-center mb-12">
+  <button onclick="printDiv()" class="px-4 py-2 bg-black text-white  rounded-lg shadow-md ">
+    Print
+  </button>
+</div>
+
+<script>
+  function dismissWarning() {
+    const warningOverlay = document.querySelector('.fixed.md:hidden');
+    if (warningOverlay) {
+      warningOverlay.style.display = 'none';
+    }
+  }
+
+  function printDiv() {
+    const printContent = document.getElementById("myDiv").innerHTML;
+    const originalContent = document.body.innerHTML;
+    document.body.innerHTML = printContent;
+    window.print();
+    document.body.innerHTML = originalContent;
+    window.location.reload();
+  }
+</script>
+
+<%- include('partials/footer'); -%>

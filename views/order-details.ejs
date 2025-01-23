@@ -214,7 +214,7 @@
                     Your order has been cancelled.
                   </h3>
                   <p class="text-xs md:text-sm text-gray-700">
-                    We have cancelled your order as per your request and have issued you a refund.
+                    We have cancelled your order as per your request and refund will be processed as per refund policy.
                   </p>
                   <% if(fullOrder.paymentMethod != 'COD') { %>
                     <p class="text-xs mt-1 md:text-sm text-gray-700 ">
@@ -289,6 +289,7 @@
                     Track order
                   </button>
                 </div>
+                
                 <div class="w-full px-3 min-[400px]:px-6">
 
                   <% fullOrder.products.forEach(orderProduct=> { %>
@@ -377,8 +378,14 @@
                                         <% } %>
                         </div>
                         <p class="font-semibold text-lg text-black py-6">Order Amount: <span class="text-indigo-600"> $<%= fullOrder.orderValue %>.00</span></p>
+                        <% if(fullOrder.status == 'Delivered') { %>
+                          <a target="_blank" rel="no-referer" href="/invoice?order_no=<%= fullOrder.orderNumber %>">
+                            <button class="p-2 mb-5 mt-2 md:mb-2 inline-flex bg-black text-white text-sm rounded-lg">
+                              <svg class="mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M7 17H17V22H7V17ZM19 20V15H5V20H3C2.44772 20 2 19.5523 2 19V9C2 8.44772 2.44772 8 3 8H21C21.5523 8 22 8.44772 22 9V19C22 19.5523 21.5523 20 21 20H19ZM5 10V12H8V10H5ZM7 2H17C17.5523 2 18 2.44772 18 3V6H6V3C6 2.44772 6.44772 2 7 2Z"></path></svg>
+                               Invoice</button>
+                          </a>
+                        <% } %>
                       </div>
-
                 </div>
               </div>
     </section>

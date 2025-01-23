@@ -33,7 +33,7 @@ export const createOrder = async (req, res) => {
                 const cart = await Cart.findOne({ user: req.user._id })
                 const total = await calculateCartTotal(cart);
 
-                res.render('cod-verify' , {amount : total});
+                res.render('cod-verify', { amount: total });
             } else {
                 const cart = await Cart.findOne({ user: req.user._id })
                 const total = await calculateCartTotal(cart);
@@ -323,7 +323,7 @@ export const processOrderCancellation = async (req, res) => {
                         // update order on db
                         const updateOrder = await Order.findOneAndUpdate({ orderNumber: foundOrder.orderNumber }, { status: 'Cancelled', paymentStatus: 'Refunded', stripe_pi_id: refund.id }, { new: true }).exec();
                         res.render("order-cancelled", { order: foundOrder });
-                        
+
                         //send email
                         const event = new Date();
                         const timestamp = event.toLocaleString('en-GB', { timeZone: 'Asia/Kolkata' });
@@ -331,7 +331,7 @@ export const processOrderCancellation = async (req, res) => {
                     } else {
                         const updateOrder = await Order.findOneAndUpdate({ orderNumber: foundOrder.orderNumber }, { status: 'Cancelled', paymentStatus: 'Refunded', stripe_pi_id: 'NA' }, { new: true }).exec();
                         res.render("order-cancelled", { order: foundOrder });
-                        
+
                         //send email
                         const event = new Date();
                         const timestamp = event.toLocaleString('en-GB', { timeZone: 'Asia/Kolkata' });
@@ -373,8 +373,8 @@ export const refundStatus = async (req, res) => {
 }
 
 
-export const paymentForCOD = async (req,res) => {
-    if (req.isAuthenticated()){
+export const paymentForCOD = async (req, res) => {
+    if (req.isAuthenticated()) {
         try {
 
             const { orderID } = req.query;
@@ -383,55 +383,55 @@ export const paymentForCOD = async (req,res) => {
                 return res.status(400).render("404");
             }
             const foundOrder = await Order.findOne({ orderNumber: req.query.orderID, user: req.user._id, paymentMethod: 'COD' });
-            
-            if(!foundOrder){
+
+            if (!foundOrder) {
                 return res.render('404');
             }
 
 
             let stripeCustomerId = req.user.stripeCustomerId;
 
-                if (!stripeCustomerId) {
-                    // Create a new Stripe customer if the user doesn't have one
-                    const createCustomer = await stripe.customers.create({
-                        name: req.user.name,
-                        email: req.user.email,
-                    });
-
-                    // Update the user with the new Stripe customer ID
-                    const updatedUser = await User.findByIdAndUpdate(
-                        req.user._id,
-                        { stripeCustomerId: createCustomer.id },
-                        { new: true }
-                    ).exec();
-
-                    // Use the updated user's Stripe customer ID
-                    stripeCustomerId = updatedUser.stripeCustomerId;
-                }
-
-                // Create the Stripe Checkout session
-                const session = await stripe.checkout.sessions.create({
-                    customer: stripeCustomerId,
-                    client_reference_id: foundOrder.orderNumber,
-                    line_items: [
-                        {
-                            price_data: {
-                                currency: 'usd',
-                                product_data: {
-                                    name: `Payment for Order ID - ${foundOrder.orderNumber}`,
-                                },
-                                unit_amount: foundOrder.orderValue * 100,
-                            },
-                            quantity: 1,
-                        },
-                    ],
-                    mode: 'payment',
-                    allow_promotion_codes: true,
-                    success_url: `${process.env.DOMAIN}/cod-order-payment-response?rto_no=${foundOrder.orderNumber}&cs_id={CHECKOUT_SESSION_ID}`,
-                    cancel_url: `${process.env.DOMAIN}/paymentFailed`,
+            if (!stripeCustomerId) {
+                // Create a new Stripe customer if the user doesn't have one
+                const createCustomer = await stripe.customers.create({
+                    name: req.user.name,
+                    email: req.user.email,
                 });
 
-                return res.redirect(303, session.url);
+                // Update the user with the new Stripe customer ID
+                const updatedUser = await User.findByIdAndUpdate(
+                    req.user._id,
+                    { stripeCustomerId: createCustomer.id },
+                    { new: true }
+                ).exec();
+
+                // Use the updated user's Stripe customer ID
+                stripeCustomerId = updatedUser.stripeCustomerId;
+            }
+
+            // Create the Stripe Checkout session
+            const session = await stripe.checkout.sessions.create({
+                customer: stripeCustomerId,
+                client_reference_id: foundOrder.orderNumber,
+                line_items: [
+                    {
+                        price_data: {
+                            currency: 'usd',
+                            product_data: {
+                                name: `Payment for Order ID - ${foundOrder.orderNumber}`,
+                            },
+                            unit_amount: foundOrder.orderValue * 100,
+                        },
+                        quantity: 1,
+                    },
+                ],
+                mode: 'payment',
+                allow_promotion_codes: true,
+                success_url: `${process.env.DOMAIN}/cod-order-payment-response?rto_no=${foundOrder.orderNumber}&cs_id={CHECKOUT_SESSION_ID}`,
+                cancel_url: `${process.env.DOMAIN}/paymentFailed`,
+            });
+
+            return res.redirect(303, session.url);
 
 
         } catch (error) {
@@ -443,7 +443,7 @@ export const paymentForCOD = async (req,res) => {
     }
 }
 
-export const codOrderPaymentResponse = async (req,res) => {
+export const codOrderPaymentResponse = async (req, res) => {
     if (!req.isAuthenticated()) {
         return res.redirect('/auth/login');
     }
@@ -459,7 +459,7 @@ export const codOrderPaymentResponse = async (req,res) => {
 
 
         if (fetchOrder.paymentStatus === 'Paid') {
-            return res.render('payment-success', {orderNumber : rto_no, amount : fetchOrder.orderValue});
+            return res.render('payment-success', { orderNumber: rto_no, amount: fetchOrder.orderValue });
         }
 
         const session = await stripe.checkout.sessions.retrieve(cs_id);
@@ -484,20 +484,20 @@ export const codOrderPaymentResponse = async (req,res) => {
             ).exec();
 
 
-            //Constructing Mail data
+            //Constructing mail data
             const data = {
-                name : updateOrder.user.name,
-                orderID : updateOrder.orderNumber,
-                amount : updateOrder.orderValue,
-                cs_id : updateOrder.stripe_cs_id,
-                link : `${process.env.DOMAIN}/account/order?order_no=${updateOrder.orderNumber}`
+                name: updateOrder.user.name,
+                orderID: updateOrder.orderNumber,
+                amount: updateOrder.orderValue,
+                cs_id: updateOrder.stripe_cs_id,
+                link: `${process.env.DOMAIN}/account/order?order_no=${updateOrder.orderNumber}`
             }
             // send email
             const event = new Date();
             const timestamp = event.toLocaleString('en-GB', { timeZone: 'Asia/Kolkata' });
-            await sendMail(updateOrder.user.email, 'Payment Successful!', 'templates/mailer/payment-success-template.ejs', {  data : data , timestamp: timestamp });
+            await sendMail(updateOrder.user.email, 'Payment Successful!', 'templates/mailer/payment-success-template.ejs', { data: data, timestamp: timestamp });
 
-            return res.render('payment-success', {orderNumber : rto_no, amount : fetchOrder.orderValue});
+            return res.render('payment-success', { orderNumber: rto_no, amount: fetchOrder.orderValue });
         } else {
             return res.redirect('/paymentFailed');
         }
@@ -505,5 +505,29 @@ export const codOrderPaymentResponse = async (req,res) => {
     } catch (error) {
         console.error('Error handling payment success callback:', error);
         return res.render('server-error');
+    }
+}
+
+
+export const invoiceGenerate = async (req, res) => {
+    if (req.isAuthenticated()) {
+        try {
+            const foundOrder = await Order.findOne({ orderNumber: req.query.order_no, user: req.user._id }).populate('items.product');
+
+            if (!foundOrder) {
+                return res.render('404');
+            }
+
+            if (foundOrder.status != 'Delivered') {
+                return res.render('404');
+            }
+            const address = req.user.address.find(addr => addr._id.toString() === foundOrder.shippingAddressID);
+            return res.render('invoice', { order: foundOrder, address : address, cust_email : req.user.email });
+        } catch (error) {
+            console.log(error);
+            res.status(500).render('server-error');
+        }
+    } else {
+        res.redirect('/auth/login');
     }
 }
